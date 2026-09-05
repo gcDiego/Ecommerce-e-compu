@@ -1,0 +1,6 @@
+C:\Users\irvin\source\repos\ProyectoSI\ecommerce\CapaEntidad\bin\Release\CapaEntidad.dll
+C:\Users\irvin\source\repos\ProyectoSI\ecommerce\CapaEntidad\bin\Release\CapaEntidad.pdb
+C:\Users\irvin\source\repos\ProyectoSI\ecommerce\CapaEntidad\obj\Release\CapaEntidad.csproj.AssemblyReference.cache
+C:\Users\irvin\source\repos\ProyectoSI\ecommerce\CapaEntidad\obj\Release\CapaEntidad.csproj.CoreCompileInputs.cache
+C:\Users\irvin\source\repos\ProyectoSI\ecommerce\CapaEntidad\obj\Release\CapaEntidad.dll
+C:\Users\irvin\source\repos\ProyectoSI\ecommerce\CapaEntidad\obj\Release\CapaEntidad.pdb
