@@ -4,8 +4,9 @@
 
 ### General
 
-* [Are MimeKit and MailKit completely free? Can I use them in my proprietary product(s)?](#completely-free)
-* [Why do I get `NotSupportedException: No data is available for encoding ######. For information on defining a custom encoding, see the documentation for the Encoding.RegisterProvider method.`?](#register-provider)
+* [Are MimeKit and MailKit completely free? Can I use them in my proprietary product (s)?](#completely-free)
+* [Why do I get
+  `NotSupportedException: No data is available for encoding ######. For information on defining a custom encoding, see the documentation for the Encoding.RegisterProvider method.`?](#register-provider)
 * [Why do I get a `TypeLoadException` when I try to create a new MimeMessage?](#type-load-exception)
 
 ### Messages
@@ -13,7 +14,8 @@
 * [How do I create a message with attachments?](#create-attachments)
 * [How do I get the main body of a message?](#message-body)
 * [How do I tell if a message has attachments?](#has-attachments)
-* [Why doesn't the `MimeMessage` class implement `ISerializable` so that I can serialize a message to disk and read it back later?](#serialize-message)
+* [Why doesn't the `MimeMessage` class implement
+  `ISerializable` so that I can serialize a message to disk and read it back later?](#serialize-message)
 * [How do I parse messages?](#load-messages)
 * [How do I save messages?](#save-messages)
 * [How do I save attachments?](#save-attachments)
@@ -30,19 +32,20 @@
 
 ## General
 
-### <a name="completely-free">Q: Are MimeKit and MailKit completely free? Can I use them in my proprietary product(s)?</a>
+### <a name="completely-free">Q: Are MimeKit and MailKit completely free? Can I use them in my proprietary product (s)?</a>
 
 Yes. MimeKit and MailKit are both completely free and open source. They are both covered under the
 [MIT](https://opensource.org/licenses/MIT) license.
 
-### <a name="register-provider">Q: Why do I get `NotSupportedException: No data is available for encoding ######. For information on defining a custom encoding, see the documentation for the Encoding.RegisterProvider method.`?</a>
+### <a name="register-provider">Q: Why do I get
+`NotSupportedException: No data is available for encoding ######. For information on defining a custom encoding, see the documentation for the Encoding.RegisterProvider method.`?</a>
 
 In .NET Core, Microsoft decided to split out the non-Unicode text encodings into a separate NuGet package called
 [System.Text.Encoding.CodePages](https://www.nuget.org/packages/System.Text.Encoding.CodePages).
 
-MimeKit already pulls in a reference to this NuGet package, so you shsouldn't need to add a reference to it in
-your project. That said, you will still need to register the encoding provider. It is recommended that you add
-the following line of code to your program initialization (e.g. the beginning of your program's Main() method):
+MimeKit already pulls in a reference to this NuGet package, so you shsouldn't need to add a reference to it in your
+project. That said, you will still need to register the encoding provider. It is recommended that you add the following
+line of code to your program initialization (e.g. the beginning of your program's Main () method):
 
 ```csharp
 System.Text.Encoding.RegisterProvider (System.Text.CodePagesEncodingProvider.Instance);
@@ -50,9 +53,9 @@ System.Text.Encoding.RegisterProvider (System.Text.CodePagesEncodingProvider.Ins
 
 ### <a name="type-load-exception">Q: Why do I get a `TypeLoadException` when I try to create a new MimeMessage?</a>
 
-This only seems to happen in cases where the application is built for .NET Framework (v4.x) and seems to be most
-common for ASP.NET web applications that were built using Visual Studio 2019 (it is unclear whether this happens
-with Visual Studio 2022 as well).
+This only seems to happen in cases where the application is built for .NET Framework (v4.x) and seems to be most common
+for ASP.NET web applications that were built using Visual Studio 2019 (it is unclear whether this happens with Visual
+Studio 2022 as well).
 
 The issue is that some (older?) versions of MSBuild do not correctly generate `\*.dll.config`, `app.config`
 and/or `web.config` files with proper assembly version binding redirects.
@@ -60,8 +63,8 @@ and/or `web.config` files with proper assembly version binding redirects.
 If this problem is happening to you, make sure to use MimeKit and MailKit >= v4.0 which include `MimeKit.dll.config`
 and `MailKit.dll.config`.
 
-The next step is to manually edit your application's `app.config` (or `web.config`) to add a binding redirect
-for `System.Runtime.CompilerServices.Unsafe`:
+The next step is to manually edit your application's `app.config` (or `web.config`) to add a binding redirect for
+`System.Runtime.CompilerServices.Unsafe`:
 
 ```xml
 <configuration>
@@ -81,13 +84,13 @@ for `System.Runtime.CompilerServices.Unsafe`:
 ### <a name="create-attachments">Q: How do I create a message with attachments?</a>
 
 To construct a message with attachments, the first thing you'll need to do is create a `multipart/mixed`
-container which you'll then want to add the message body to first. Once you've added the body, you can
-then add MIME parts to it that contain the content of the files you'd like to attach, being sure to set
-the `Content-Disposition` header value to attachment. You'll probably also want to set the `filename`
+container which you'll then want to add the message body to first. Once you've added the body, you can then add MIME
+parts to it that contain the content of the files you'd like to attach, being sure to set the `Content-Disposition`
+header value to attachment. You'll probably also want to set the `filename`
 parameter on the `Content-Disposition` header as well as the `name` parameter on the `Content-Type`
 header. The most convenient way to do this is to use the
-[MimePart.FileName](https://www.mimekit.net/docs/html/P_MimeKit_MimePart_FileName.htm) property which
-will set both parameters for you as well as setting the `Content-Disposition` header value to `attachment`
+[MimePart.FileName](https://www.mimekit.net/docs/html/P_MimeKit_MimePart_FileName.htm) property which will set both
+parameters for you as well as setting the `Content-Disposition` header value to `attachment`
 if it has not already been set to something else.
 
 ```csharp
@@ -162,8 +165,8 @@ For more information, see [Creating Messages](https://www.mimekit.net/docs/html/
 
 (Note: for the TL;DR version, skip to [the end](#message-body-tldr))
 
-MIME is a tree structure of parts. There are multiparts which contain other parts (even other multiparts).
-There are message parts which contain messages. And finally, there are leaf-node parts which contain content.
+MIME is a tree structure of parts. There are multiparts which contain other parts (even other multiparts). There are
+message parts which contain messages. And finally, there are leaf-node parts which contain content.
 
 There are a few common message structures:
 
@@ -208,7 +211,7 @@ There are a few common message structures:
        application/zip
     ```
 
-    or...
+   or...
 
     ```
     multipart/mixed
@@ -222,39 +225,39 @@ There are a few common message structures:
        application/zip
     ```
 
-<a name="message-body-tldr"></a>Now, if you don't care about any of that and just want to get the text of
-the first `text/plain` or `text/html` part you can find, that's easy.
+<a name="message-body-tldr"></a>Now, if you don't care about any of that and just want to get the text of the first
+`text/plain` or `text/html` part you can find, that's easy.
 
-[MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm) has two convenience properties
-for this: [TextBody](https://www.mimekit.net/docs/html/P_MimeKit_MimeMessage_TextBody.htm) and
+[MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm) has two convenience properties for
+this: [TextBody](https://www.mimekit.net/docs/html/P_MimeKit_MimeMessage_TextBody.htm) and
 [HtmlBody](https://www.mimekit.net/docs/html/P_MimeKit_MimeMessage_HtmlBody.htm).
 
-`MimeMessage.HtmlBody`, as the name implies, will traverse the MIME structure for you and find the most
-appropriate body part with a `Content-Type` of `text/html` that can be interpreted as the message body.
-Likewise, the `TextBody` property can be used to get the `text/plain` version of the message body.
+`MimeMessage.HtmlBody`, as the name implies, will traverse the MIME structure for you and find the most appropriate body
+part with a `Content-Type` of `text/html` that can be interpreted as the message body. Likewise, the `TextBody` property
+can be used to get the `text/plain` version of the message body.
 
 For more information, see [Working with Messages](https://www.mimekit.net/docs/html/Working-With-Messages.htm).
 
 ### <a name="has-attachments">Q: How do I tell if a message has attachments?</a>
 
-In most cases, a message with a body that has a MIME-type of `multipart/mixed` containing more than a
-single part probably has attachments. As illustrated above, the first part of a `multipart/mixed` is
-typically the textual body of the message, but it is not always quite that simple.
+In most cases, a message with a body that has a MIME-type of `multipart/mixed` containing more than a single part
+probably has attachments. As illustrated above, the first part of a `multipart/mixed` is typically the textual body of
+the message, but it is not always quite that simple.
 
-In general, MIME attachments will have a `Content-Disposition` header with a value of `attachment`.
-To get the list of body parts matching this criteria, you can use the
+In general, MIME attachments will have a `Content-Disposition` header with a value of `attachment`. To get the list of
+body parts matching this criteria, you can use the
 [MimeMessage.Attachments](https://www.mimekit.net/docs/html/P_MimeKit_MimeMessage_Attachments.htm) property.
 
-Unfortunately, not all mail clients follow this convention and so you may need to write your own custom logic.
-For example, you may wish to treat all body parts having a `name` or `filename` parameter set on them:
+Unfortunately, not all mail clients follow this convention and so you may need to write your own custom logic. For
+example, you may wish to treat all body parts having a `name` or `filename` parameter set on them:
 
 ```csharp
 var attachments = message.BodyParts.OfType<MimePart> ().Where (part => !string.IsNullOrEmpty (part.FileName));
 ```
 
-A more sophisticated approach is to treat body parts not referenced by the main textual body part of the
-message as attachments. In other words, treat any body part not used for rendering the message as an
-attachment. For an example on how to do this, consider the following code snippets:
+A more sophisticated approach is to treat body parts not referenced by the main textual body part of the message as
+attachments. In other words, treat any body part not used for rendering the message as an attachment. For an example on
+how to do this, consider the following code snippets:
 
 ```csharp
 /// <summary>
@@ -536,16 +539,18 @@ void Render (MimeMessage message)
 }
 ```
 
-Once you've rendered the message using the above technique, you'll have a list of attachments that
-were not used, even if they did not match the simplistic criteria used by the `MimeMessage.Attachments`
+Once you've rendered the message using the above technique, you'll have a list of attachments that were not used, even
+if they did not match the simplistic criteria used by the `MimeMessage.Attachments`
 property.
 
-### <a name="serialize-message">Q: Why doesn't the `MimeMessage` class implement `ISerializable` so that I can serialize a message to disk and read it back later?</a>
+### <a name="serialize-message">Q: Why doesn't the `MimeMessage` class implement
+`ISerializable` so that I can serialize a message to disk and read it back later?</a>
 
-The MimeKit API was designed to use the existing MIME format for serialization. In light of this, the ability
-to use the .NET serialization API and format did not make much sense to support.
+The MimeKit API was designed to use the existing MIME format for serialization. In light of this, the ability to use the
+.NET serialization API and format did not make much sense to support.
 
-You can easily serialize a [MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm) to a stream using the
+You can easily serialize a [MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm) to a stream using
+the
 [WriteTo](https://www.mimekit.net/docs/html/Overload_MimeKit_MimeMessage_WriteTo.htm) methods.
 
 For more information on this topic, see the following other two topics:
@@ -555,11 +560,11 @@ For more information on this topic, see the following other two topics:
 
 ### <a name="load-messages">Q: How do I parse messages?</a>
 
-One of the more common operations that MimeKit is meant for is parsing email messages from arbitrary streams.
-There are two ways of accomplishing this task.
+One of the more common operations that MimeKit is meant for is parsing email messages from arbitrary streams. There are
+two ways of accomplishing this task.
 
-The first way is to use one of the [Load](https://www.mimekit.net/docs/html/Overload_MimeKit_MimeMessage_Load.htm) methods
-on `MimeMessage`:
+The first way is to use one of the [Load](https://www.mimekit.net/docs/html/Overload_MimeKit_MimeMessage_Load.htm)
+methods on `MimeMessage`:
 
 ```csharp
 // Load a MimeMessage from a stream
@@ -573,9 +578,9 @@ Or you can load a message from a file path:
 var message = MimeMessage.Load ("message.eml");
 ```
 
-The second way is to use the [MimeParser](https://www.mimekit.net/docs/html/T_MimeKit_MimeParser.htm) class. For the most
-part, using the `MimeParser` directly is not necessary unless you wish to parse a Unix mbox file stream. However, this is
-how you would do it:
+The second way is to use the [MimeParser](https://www.mimekit.net/docs/html/T_MimeKit_MimeParser.htm) class. For the
+most part, using the `MimeParser` directly is not necessary unless you wish to parse a Unix mbox file stream. However,
+this is how you would do it:
 
 ```csharp
 // Load a MimeMessage from a stream
@@ -597,8 +602,8 @@ while (!parser.IsEndOfStream) {
 
 ### <a name="save-messages">Q: How do I save messages?</a>
 
-One you've got a [MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm), you can save
-it to a file using the [WriteTo](https://mimekit.net/docs/html/Overload_MimeKit_MimeMessage_WriteTo.htm) method:
+One you've got a [MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm), you can save it to a file
+using the [WriteTo](https://mimekit.net/docs/html/Overload_MimeKit_MimeMessage_WriteTo.htm) method:
 
 ```csharp
 message.WriteTo ("message.eml");
@@ -606,10 +611,9 @@ message.WriteTo ("message.eml");
 
 The `WriteTo` method also has overloads that allow you to write the message to a `Stream` instead.
 
-By default, the `WriteTo` method will save the message using DOS line-endings on Windows and Unix
-line-endings on Unix-based systems such as macOS and Linux. You can override this behavior by
-passing a [FormatOptions](https://mimekit.net/docs/html/T_MimeKit_FormatOptions.htm) argument to
-the method:
+By default, the `WriteTo` method will save the message using DOS line-endings on Windows and Unix line-endings on
+Unix-based systems such as macOS and Linux. You can override this behavior by passing
+a [FormatOptions](https://mimekit.net/docs/html/T_MimeKit_FormatOptions.htm) argument to the method:
 
 ```csharp
 // clone the default formatting options
@@ -621,16 +625,15 @@ format.NewLineFormat = NewLineFormat.Dos;
 message.WriteTo (format, "message.eml");
 ```
 
-Note: While it may seem like you can safely use the `ToString` method to serialize a message,
-***DON'T DO IT!*** This is ***not*** safe! MIME messages cannot be accurately represented as
-strings due to the fact that each MIME part of the message *may* be encoded in a different
-character set, thus making it impossible to convert the message into a unicode string using a
-single charset to do the conversion (which is *exactly* what `ToString` does).
+Note: While it may seem like you can safely use the `ToString` method to serialize a message, ***DON'T DO IT!*** This is
+***not*** safe! MIME messages cannot be accurately represented as strings due to the fact that each MIME part of the
+message *may* be encoded in a different character set, thus making it impossible to convert the message into a unicode
+string using a single charset to do the conversion (which is *exactly* what `ToString` does).
 
 ### <a name="save-attachments">Q: How do I save attachments?</a>
 
-If you've already got a [MimePart](https://www.mimekit.net/docs/html/T_MimeKit_MimePart.htm) that represents
-the attachment that you'd like to save, here's how you might save it:
+If you've already got a [MimePart](https://www.mimekit.net/docs/html/T_MimeKit_MimePart.htm) that represents the
+attachment that you'd like to save, here's how you might save it:
 
 ```csharp
 using (var stream = File.Create (fileName))
@@ -676,12 +679,12 @@ The [From](https://www.mimekit.net/docs/html/P_MimeKit_MimeMessage_From.htm),
 [MimeMessage](https://www.mimekit.net/docs/html/T_MimeKit_MimeMessage.htm) are all of type
 [InternetAddressList](https://www.mimekit.net/docs/html/T_MimeKit_InternetAddressList.htm). An
 `InternetAddressList` is a list of
-[InternetAddress](https://www.mimekit.net/docs/html/T_MimeKit_InternetAddress.htm) items. This is
-where most people start to get lost because an `InternetAddress` is an abstract class that only
-really has a [Name](https://www.mimekit.net/docs/html/P_MimeKit_InternetAddress_Name.htm) property.
+[InternetAddress](https://www.mimekit.net/docs/html/T_MimeKit_InternetAddress.htm) items. This is where most people
+start to get lost because an `InternetAddress` is an abstract class that only really has
+a [Name](https://www.mimekit.net/docs/html/P_MimeKit_InternetAddress_Name.htm) property.
 
-As you've probably already discovered, the `Name` property contains the name of the person
-(if available), but what you want is his or her email address, not their name.
+As you've probably already discovered, the `Name` property contains the name of the person (if available), but what you
+want is his or her email address, not their name.
 
 To get the email address, you'll need to figure out what subclass of address each `InternetAddress`
 really is. There are 2 subclasses of `InternetAddress`:
@@ -689,8 +692,8 @@ really is. There are 2 subclasses of `InternetAddress`:
 [MailboxAddress](https://www.mimekit.net/docs/html/T_MimeKit_MailboxAddress.htm).
 
 A `GroupAddress` is a named group of more `InternetAddress` items that are contained within the
-[Members](https://www.mimekit.net/docs/html/P_MimeKit_GroupAddress_Members.htm) property. To get
-an idea of what a group address represents, consider the following examples:
+[Members](https://www.mimekit.net/docs/html/P_MimeKit_GroupAddress_Members.htm) property. To get an idea of what a group
+address represents, consider the following examples:
 
 ```
 To: My Friends: Joey <joey@friends.com>, Monica <monica@friends.com>, "Mrs. Chanandler Bong"
@@ -698,21 +701,20 @@ To: My Friends: Joey <joey@friends.com>, Monica <monica@friends.com>, "Mrs. Chan
 ```
 
 In the above example, the `To` header's `InternetAddressList` will contain only 1 item which will be a
-`GroupAddress` with a `Name` value of `My Friends`. The `Members` property of the `GroupAddress` will
-contain 5 more `InternetAddress` items (which will all be instances of `MailboxAddress`).
+`GroupAddress` with a `Name` value of `My Friends`. The `Members` property of the `GroupAddress` will contain 5 more
+`InternetAddress` items (which will all be instances of `MailboxAddress`).
 
-The above example, however, is not very likely to ever be seen in messages you deal with. A far more
-common example would be the one below:
+The above example, however, is not very likely to ever be seen in messages you deal with. A far more common example
+would be the one below:
 
 ```
 To: undisclosed-recipients:;
 ```
 
-Most of the time, the `From`, `To`, and `Cc` headers will only contain mailbox addresses. As you will
-notice, a `MailboxAddress` has an
-[Address](https://www.mimekit.net/docs/html/P_MimeKit_MailboxAddress_Address.htm) property which will
-contain the email address of the mailbox. In the following example, the `Address` property will
-contain the value `john@smith.com`:
+Most of the time, the `From`, `To`, and `Cc` headers will only contain mailbox addresses. As you will notice, a
+`MailboxAddress` has an
+[Address](https://www.mimekit.net/docs/html/P_MimeKit_MailboxAddress_Address.htm) property which will contain the email
+address of the mailbox. In the following example, the `Address` property will contain the value `john@smith.com`:
 
 ```
 To: John Smith <john@smith.com>
@@ -728,21 +730,20 @@ foreach (var mailbox in message.To.Mailboxes)
 
 ### <a name="untitled-attachments">Q: Why do attachments with unicode or long filenames appear as "ATT0####.dat" in Outlook?</a>
 
-An attachment filename is stored as a MIME parameter on the `Content-Disposition` header. Unfortunately,
-the original MIME specifications did not specify a method for encoding non-ASCII filenames. In 1997,
+An attachment filename is stored as a MIME parameter on the `Content-Disposition` header. Unfortunately, the original
+MIME specifications did not specify a method for encoding non-ASCII filenames. In 1997,
 [rfc2184](https://tools.ietf.org/html/rfc2184) (later updated by [rfc2231](https://tools.ietf.org/html/rfc2231))
-was published which specified an encoding mechanism to use for encoding them. Since there was a window in
-time where the MIME specifications did not define a way to encode them, some mail client developers decided
-to use the mechanism described by [rfc2047](https://tools.ietf.org/html/rfc2047) which was meant for
-encoding non-ASCII text in headers. While this may at first seem logical, the problem with this approach
-was that rfc2047 `encoded-word` tokens are not allowed to be in quotes (as well as some other issues) and
-so another, more appropriate, encoding mechanism was needed.
+was published which specified an encoding mechanism to use for encoding them. Since there was a window in time where the
+MIME specifications did not define a way to encode them, some mail client developers decided to use the mechanism
+described by [rfc2047](https://tools.ietf.org/html/rfc2047) which was meant for encoding non-ASCII text in headers.
+While this may at first seem logical, the problem with this approach was that rfc2047 `encoded-word` tokens are not
+allowed to be in quotes (as well as some other issues) and so another, more appropriate, encoding mechanism was needed.
 
-Outlook is one of those mail clients which decided to encode filenames using the mechanism described in
-rfc2047 and until Outlook 2007, did not support filenames encoded using the mechanism defined in rfc2231.
+Outlook is one of those mail clients which decided to encode filenames using the mechanism described in rfc2047 and
+until Outlook 2007, did not support filenames encoded using the mechanism defined in rfc2231.
 
-As of MimeKit v1.2.18, it is possible to configure MimeKit to use the rfc2047 encoding mechanism for
-filenames in the following two ways:
+As of MimeKit v1.2.18, it is possible to configure MimeKit to use the rfc2047 encoding mechanism for filenames in the
+following two ways:
 
 The first way is to set the encoding method on each individual
 [Parameter](https://www.mimekit.net/docs/html/T_MimeKit_Parameter.htm):
@@ -764,8 +765,8 @@ foreach (var param in attachment.ContentDisposition.Parameters) {
 
 ### <a name="decrypt-inline-pgp">Q: How do I decrypt PGP messages that are embedded in the main message text?</a>
 
-Some PGP-enabled mail clients, such as Thunderbird, embed encrypted PGP blurbs within the `text/plain` body
-of the message rather than using the PGP/MIME format that MimeKit prefers.
+Some PGP-enabled mail clients, such as Thunderbird, embed encrypted PGP blurbs within the `text/plain` body of the
+message rather than using the PGP/MIME format that MimeKit prefers.
 
 These messages often look something like this:
 
@@ -803,8 +804,8 @@ Y3J5cHRlZApibHVyYi4gTW1ta2F5PyBUaGFua3MuCg==
 -----END PGP MESSAGE-----
 ```
 
-To deal with these kinds of messages, I've added a method to OpenPgpContext called `GetDecryptedStream` which
-can be used to get the raw decrypted stream.
+To deal with these kinds of messages, I've added a method to OpenPgpContext called `GetDecryptedStream` which can be
+used to get the raw decrypted stream.
 
 There are actually 2 variants of this method:
 
@@ -818,8 +819,8 @@ and
 public Stream GetDecryptedStream (Stream encryptedData)
 ```
 
-The first variant is useful in cases where the encrypted PGP blurb is also digitally signed, allowing you to get
-your hands on the list of digitial signatures in order for you to verify each of them.
+The first variant is useful in cases where the encrypted PGP blurb is also digitally signed, allowing you to get your
+hands on the list of digitial signatures in order for you to verify each of them.
 
 To decrypt the content of the message, you'll want to locate the `TextPart` (in this case, it'll just be
 `message.Body`)
@@ -839,18 +840,17 @@ static Stream DecryptEmbeddedPgp (TextPart text)
 }
 ```
 
-What you do with that decrypted stream is up to you. It's up to you to figure out what the decrypted content is
-(is it text? a jpeg image? a video?) and how to display it to the user.
+What you do with that decrypted stream is up to you. It's up to you to figure out what the decrypted content is (is it
+text? a jpeg image? a video?) and how to display it to the user.
 
 ### <a name="reply-message">Q: How do I reply to a message?</a>
 
-Replying to a message is fairly simple. For the most part, you'd just create the reply message
-the same way you'd create any other message. There are only a few slight differences:
+Replying to a message is fairly simple. For the most part, you'd just create the reply message the same way you'd create
+any other message. There are only a few slight differences:
 
-1. In the reply message, you'll want to prefix the `Subject` header with `"Re: "` if the prefix
-   doesn't already exist in the message you are replying to (in other words, if you are replying
-   to a message with a `Subject` of `"Re: party tomorrow night!"`, you would not prefix it with
-   another `"Re: "`).
+1. In the reply message, you'll want to prefix the `Subject` header with `"Re: "` if the prefix doesn't already exist in
+   the message you are replying to (in other words, if you are replying to a message with a `Subject` of
+   `"Re: party tomorrow night!"`, you would not prefix it with another `"Re: "`).
 2. You will want to set the reply message's `In-Reply-To` header to the value of the
    `Message-Id` header in the original message.
 3. You will want to copy the original message's `References` header into the reply message's
@@ -918,8 +918,8 @@ public static MimeMessage Reply (MimeMessage message, MailboxAddress from, bool 
 }
 ```
 
-But what if you wanted to reply to a message and quote the HTML formatting of the original message
-body (assuming it has an HTML body) while still including the embedded images?
+But what if you wanted to reply to a message and quote the HTML formatting of the original message body (assuming it has
+an HTML body) while still including the embedded images?
 
 This gets a bit more complicated, but it's still doable...
 
@@ -1172,8 +1172,8 @@ public static MimeMessage Reply (MimeMessage message, MailboxAddress from, bool 
 
 ### <a name="forward-message">Q: How do I forward a message?</a>
 
-There are 2 common ways of forwarding a message: attaching the original message as an attachment and inlining
-the message body much like replying typically does. Which method you choose is up to you.
+There are 2 common ways of forwarding a message: attaching the original message as an attachment and inlining the
+message body much like replying typically does. Which method you choose is up to you.
 
 To forward a message by attaching it as an attachment, you would do do something like this:
 
@@ -1248,12 +1248,13 @@ Keep in mind that not all messages will have a `TextBody` available, so you'll h
 
 ### <a name="garbled-text">Q: Why does text show up garbled in my ASP.NET Core / .NET Core / .NET 5 app?</a>
 
-.NET Core (and ASP.NET Core by extension) and .NET >= 5 only provide the Unicode encodings, ASCII and ISO-8859-1 by default.
-Other text encodings are not available to your application unless your application
+.NET Core (and ASP.NET Core by extension) and .NET >= 5 only provide the Unicode encodings, ASCII and ISO-8859-1 by
+default. Other text encodings are not available to your application unless your application
 [registers](https://docs.microsoft.com/en-us/dotnet/api/system.text.encoding.registerprovider?view=net-5.0) the encoding
 provider that provides all of the additional encodings.
 
-First, add a package reference for the [System.Text.Encoding.CodePages](https://www.nuget.org/packages/System.Text.Encoding.CodePages)
+First, add a package reference for
+the [System.Text.Encoding.CodePages](https://www.nuget.org/packages/System.Text.Encoding.CodePages)
 nuget package to your project and then register the additional text encodings using the following code snippet:
 
 ```csharp
@@ -1267,8 +1268,8 @@ Note: The above code snippet should be safe to call in .NET Framework versions >
 ### <a name="parse-web-request-form-data">Q: How would I parse multipart/form-data from an HTTP web request?</a>
 
 Since classes like `HttpWebResponse` take care of parsing the HTTP headers (which includes the `Content-Type`
-header) and only offer a content stream to consume, MimeKit provides a way to deal with this using the following
-two static methods on `MimeEntity`:
+header) and only offer a content stream to consume, MimeKit provides a way to deal with this using the following two
+static methods on `MimeEntity`:
 
 ```csharp
 public static MimeEntity Load (ParserOptions options, ContentType contentType, Stream content, CancellationToken cancellationToken = default (CancellationToken));

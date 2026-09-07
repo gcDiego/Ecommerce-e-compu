@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+ViewBag.Title = "Home Page";
 }
 
 <h1 class="mt-4">Dashboard</h1>
@@ -69,20 +69,20 @@
                 <div class="col-sm-2">
                     <div class="col mb-2">
                         <lable class="form-label">Fecha de Inicio</lable>
-                        <input class="form-control" type="text" id="txtfechainicio" name="fechainicio" />
+                        <input class="form-control" type="text" id="txtfechainicio" name="fechainicio"/>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="col mb-2">
                         <lable class="form-label">Fecha Fin</lable>
-                        <input class="form-control" type="text" id="txtfechafin" name="fechafin" />
+                        <input class="form-control" type="text" id="txtfechafin" name="fechafin"/>
                     </div>
                 </div>
 
                 <div class="col-sm-2">
                     <div class="col mb-2">
                         <lable class="form-label">ID Transaccion</lable>
-                        <input class="form-control" type="text" id="txtidtransaccion" name="idtransaccion" />
+                        <input class="form-control" type="text" id="txtidtransaccion" name="idtransaccion"/>
                     </div>
                 </div>
 
@@ -106,21 +106,21 @@
 
         </form>
 
-        <hr />
+        <hr/>
 
         <div class="row">
             <div class="col-sm-12">
                 <table id="tabla" class="display cell-border" style="width:100%">
                     <thead>
-                        <tr>
-                            <th>Fecha Venta</th>
-                            <th>Cliente</th>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>ID Transaccion</th>
-                        </tr>
+                    <tr>
+                        <th>Fecha Venta</th>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th>ID Transaccion</th>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -132,17 +132,16 @@
 </div>
 
 
-
 @section scripts{
-    <script>
+<script>
 
-        var tabladata;
+    var tabladata;
 
-      $(document).ready(function(){
+    $(document).ready(function () {
 
 
-        $("#txtfechainicio").datepicker({ dateFormat: "dd/mm/yy" }).datepicker('setDate',new Date())
-        $("#txtfechafin").datepicker({ dateFormat: "dd/mm/yy" }).datepicker('setDate', new Date())
+        $("#txtfechainicio").datepicker({dateFormat: "dd/mm/yy"}).datepicker('setDate', new Date())
+        $("#txtfechafin").datepicker({dateFormat: "dd/mm/yy"}).datepicker('setDate', new Date())
 
         jQuery.ajax({
             url: '@Url.Action("VistaDashBoard", "Home")',
@@ -161,66 +160,61 @@
         });
 
 
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListaReporte", "Home")' +
+                    "?fechainicio=" + $("#txtfechainicio").val() +
+                    "&fechafin=" + $("#txtfechafin").val() +
+                    "&idtransaccion=" + $("#txtidtransaccion").val(),
+                type: 'GET',
+                dataType: "json"
+            },
+            "columns": [
+                {"data": "FechaVenta"},
+                {"data": "Cliente"},
+                {"data": "Producto"},
+                {"data": "Precio"},
+                {"data": "Cantidad"},
+                {"data": "Total"},
+                {"data": "IdTransaccion"}
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/2.3.0/i18n/es-ES.json"
+            }
+        });
 
 
-          tabladata = $("#tabla").DataTable({
-              responsive: true,
-              ordering: false,
-              "ajax": {
-                  url: '@Url.Action("ListaReporte", "Home")' +
-                      "?fechainicio=" + $("#txtfechainicio").val() +
-                      "&fechafin=" + $("#txtfechafin").val() +
-                      "&idtransaccion=" + $("#txtidtransaccion").val(),
-                  type: 'GET',
-                  dataType: "json"
-              },
-              "columns": [
-                  { "data": "FechaVenta" },
-                  { "data": "Cliente" },
-                  { "data": "Producto" },
-                  { "data": "Precio" },
-                  { "data": "Cantidad" },
-                  { "data": "Total" },
-                  { "data": "IdTransaccion" }
-              ],
-              "language": {
-                  "url": "https://cdn.datatables.net/plug-ins/2.3.0/i18n/es-ES.json"
-              }
-          });
-
-
-          function actualizarTabla() {
-              var nueva_url = '@Url.Action("ListaReporte", "Home")' +
-                  "?fechainicio=" + $("#txtfechainicio").val() +
-                  "&fechafin=" + $("#txtfechafin").val() +
-                  "&idtransaccion=" + $("#txtidtransaccion").val();
-
-              tabladata.ajax.url(nueva_url).load();
-          }
-
-
-          $("#txtfechainicio, #txtfechafin, #txtidtransaccion").on("change input", function () {
-              actualizarTabla();
-          });
-
-
-
-      })
-
-      $("#btnbuscar").on("click", function () {
-
+        function actualizarTabla() {
             var nueva_url = '@Url.Action("ListaReporte", "Home")' +
-              "?fechainicio=" + $("#txtfechainicio").val() +
-              "&fechafin=" + $("#txtfechafin").val() +
-              "&idtransaccion=" + $("#txtidtransaccion").val();
+                "?fechainicio=" + $("#txtfechainicio").val() +
+                "&fechafin=" + $("#txtfechafin").val() +
+                "&idtransaccion=" + $("#txtidtransaccion").val();
 
             tabladata.ajax.url(nueva_url).load();
-
-      });
-
+        }
 
 
+        $("#txtfechainicio, #txtfechafin, #txtidtransaccion").on("change input", function () {
+            actualizarTabla();
+        });
 
-    </script>
+
+    })
+
+    $("#btnbuscar").on("click", function () {
+
+        var nueva_url = '@Url.Action("ListaReporte", "Home")' +
+            "?fechainicio=" + $("#txtfechainicio").val() +
+            "&fechafin=" + $("#txtfechafin").val() +
+            "&idtransaccion=" + $("#txtidtransaccion").val();
+
+        tabladata.ajax.url(nueva_url).load();
+
+    });
+
+
+</script>
 }
   

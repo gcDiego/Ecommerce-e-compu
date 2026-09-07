@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Marca";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+ViewBag.Title = "Marca";
+Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <ol class="breadcrumb mb-4 mt-4">
@@ -19,14 +19,14 @@
                 <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
             </div>
         </div>
-        <hr />
+        <hr/>
         <table id="tabla" class="display cell-border" style="width: 100%">
             <thead>
-                <tr>
-                    <th>Descripcion</th>
-                    <th>Activo</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Descripcion</th>
+                <th>Activo</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
             </tbody>
@@ -36,7 +36,8 @@
 </div>
 
 
-<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
@@ -45,7 +46,7 @@
             </div>
             <div class="modal-body">
 
-                <input id="txtid" type="text" value="0" />
+                <input id="txtid" type="text" value="0"/>
 
                 <div class="row" g-1>
 
@@ -83,82 +84,80 @@
 </div>
 
 @section scripts{
-    <script>
+<script>
 
-        var tabladata;
-        var filaSeleccionada;
+    var tabladata;
+    var filaSeleccionada;
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            tabladata = $("#tabla").DataTable({
-                responsive: true,
-                ordering: false,
-                "ajax": {
-                    url: '@Url.Action("ListarMarca", "Mantenedor")',
-                    type: 'GET',
-                    dataType: "json"
-                },
-                "columns": [
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListarMarca", "Mantenedor")',
+                type: 'GET',
+                dataType: "json"
+            },
+            "columns": [
 
-                    { "data": "Descripcion" },
-                    {
-                        "data": "Activo",
-                        "render": function (valor) {
-                            if (valor) {
-                                return '<span class="badge bg-success">Si</span>';
-                            } else {
-                                return '<span class="badge bg-danger">No</span>';
-                            }
+                {"data": "Descripcion"},
+                {
+                    "data": "Activo",
+                    "render": function (valor) {
+                        if (valor) {
+                            return '<span class="badge bg-success">Si</span>';
+                        } else {
+                            return '<span class="badge bg-danger">No</span>';
                         }
-                    },
-                    {
-                        "defaultContent": '<button type="button" class="btn btn-primary btn-sn btn-editar"> <i class="fas fa-pen"></i></button>' +
-                            '<button type="button" class="btn btn-danger btn-sn ms-2 btn-eliminar"> <i class="fas fa-trash"></i></button>',
-                        "orderable": false,
-                        "searchable": false,
-                        "width": "90px"
                     }
-                ],
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/2.3.0/i18n/es-ES.json"
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-primary btn-sn btn-editar"> <i class="fas fa-pen"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sn ms-2 btn-eliminar"> <i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
                 }
-            });
-
-
-
-
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/2.3.0/i18n/es-ES.json"
+            }
         });
 
 
-        function abrirModal(json) {
+    });
 
-            $("#txtid").val(0);
-            $("#txtdescripcion").val("");
-            $("#cbactivo").val(1);
 
-            $("#mensajeError").hide();
+    function abrirModal(json) {
 
-            if (json != null) {
+        $("#txtid").val(0);
+        $("#txtdescripcion").val("");
+        $("#cbactivo").val(1);
 
-                $("#txtid").val(json.IdMarca);
-                $("#txtdescripcion").val(json.Descripcion);
-                $("#cbactivo").val(json.Activo === true ? 1 : 0);
-            }
+        $("#mensajeError").hide();
 
-            $("#FormModal").modal("show");
+        if (json != null) {
+
+            $("#txtid").val(json.IdMarca);
+            $("#txtdescripcion").val(json.Descripcion);
+            $("#cbactivo").val(json.Activo === true ? 1 : 0);
         }
 
-        $("#tabla tbody").on("click", '.btn-editar', function () {
-            filaSeleccionada = $(this).closest("tr");
-            var data = tabladata.row(filaSeleccionada).data();
-            abrirModal(data)
-        });
+        $("#FormModal").modal("show");
+    }
 
-        $("#tabla tbody").on("click", '.btn-eliminar', function () {
-            var marcaseleccionada = $(this).closest("tr");
-            var data = tabladata.row(marcaseleccionada).data();
+    $("#tabla tbody").on("click", '.btn-editar', function () {
+        filaSeleccionada = $(this).closest("tr");
+        var data = tabladata.row(filaSeleccionada).data();
+        abrirModal(data)
+    });
 
-            swal({
+    $("#tabla tbody").on("click", '.btn-eliminar', function () {
+        var marcaseleccionada = $(this).closest("tr");
+        var data = tabladata.row(marcaseleccionada).data();
+
+        swal({
                 title: "Estas Seguro?",
                 text: "Desea eliminar la marca?",
                 type: "warning",
@@ -169,117 +168,111 @@
                 closeOnConfirm: true,
 
             },
-                function () {
+            function () {
 
-                    jQuery.ajax({
-                        url: '@Url.Action("EliminarMarca", "Mantenedor")',
-                        type: "POST",
-                        data: JSON.stringify({ id: data.IdMarca }),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
+                jQuery.ajax({
+                    url: '@Url.Action("EliminarMarca", "Mantenedor")',
+                    type: "POST",
+                    data: JSON.stringify({id: data.IdMarca}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
 
-                            if (data.resultado) {
-                                tabladata.row(marcaseleccionada).remove().draw();
-                            } else {
-                                swal("No se pudo eliminar", data.mensaje, "error")
-                            }
-                        },
+                        if (data.resultado) {
+                            tabladata.row(marcaseleccionada).remove().draw();
+                        } else {
+                            swal("No se pudo eliminar", data.mensaje, "error")
+                        }
+                    },
 
-                        error: function (error) {
-                            console.log(error)
-                        },
-
-                    });
+                    error: function (error) {
+                        console.log(error)
+                    },
 
                 });
 
+            });
+
+
+    });
+
+
+    function Guardar() {
+        var Marca = {
+
+            IdMarca: $("#txtid").val(),
+            Descripcion: $("#txtdescripcion").val(),
+            Activo: $("#cbactivo").val() == 1 ? true : false
+
+
+        }
+
+        jQuery.ajax({
+            url: '@Url.Action("GuardarMarca", "Mantenedor")',
+            type: "POST",
+            data: JSON.stringify({objeto: Marca}),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $(".modal-body").LoadingOverlay("hide");
+
+                if (Marca.IdMarca == 0) {
+
+                    if (data.resultado != 0) {
+
+                        Marca.IdMarca = data.resultado;
+                        tabladata.row.add(Marca).draw(false);
+                        $("#FormModal").modal("hide");
+
+                    } else {
+
+                        $("#mensajeError").text(data.mensaje);
+                        $("#mensajeError").show();
+
+                    }
+
+                } else {
+
+                    if (data.resultado) {
+
+                        tabladata.row(filaSeleccionada).data(Marca).draw(false);
+                        filaSeleccionada = null;
+                        $("#FormModal").modal("hide");
+
+                    } else {
+
+                        $("#mensajeError").text(data.mensaje);
+                        $("#mensajeError").show();
+
+                    }
+
+
+                }
+
+            },
+            error: function (error) {
+                $(".modal-body").LoadingOverlay("hide");
+                $("#mensajeError").text("Error ajax");
+                $("#mensajeError").show();
+            },
+            beforeSend: function () {
+
+                $(".modal-body").LoadingOverlay("show", {
+                    imageResizeFactor: 2,
+                    text: "Cargando...",
+                    size: 14
+                })
+
+            }
 
 
         });
 
 
-        function Guardar() {
-            var Marca = {
+    }
 
-                IdMarca: $("#txtid").val(),
-                Descripcion: $("#txtdescripcion").val(),
-                Activo: $("#cbactivo").val() == 1 ? true : false
-
-
-            }
-
-            jQuery.ajax({
-                url: '@Url.Action("GuardarMarca", "Mantenedor")',
-                type: "POST",
-                data: JSON.stringify({ objeto: Marca }),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    $(".modal-body").LoadingOverlay("hide");
-
-                    if (Marca.IdMarca == 0) {
-
-                        if (data.resultado != 0) {
-
-                            Marca.IdMarca = data.resultado;
-                            tabladata.row.add(Marca).draw(false);
-                            $("#FormModal").modal("hide");
-
-                        } else {
-
-                            $("#mensajeError").text(data.mensaje);
-                            $("#mensajeError").show();
-
-                        }
-
-                    } else {
-
-                        if (data.resultado) {
-
-                            tabladata.row(filaSeleccionada).data(Marca).draw(false);
-                            filaSeleccionada = null;
-                            $("#FormModal").modal("hide");
-
-                        } else {
-
-                            $("#mensajeError").text(data.mensaje);
-                            $("#mensajeError").show();
-
-                        }
-
-
-                    }
-
-                },
-                error: function (error) {
-                    $(".modal-body").LoadingOverlay("hide");
-                    $("#mensajeError").text("Error ajax");
-                    $("#mensajeError").show();
-                },
-                beforeSend: function () {
-
-                    $(".modal-body").LoadingOverlay("show", {
-                        imageResizeFactor: 2,
-                        text: "Cargando...",
-                        size: 14
-                    })
-
-                }
-
-
-            });
-
-
-
-        }
-
-    </script>
-
-
-
-
+</script>
 
 
 }

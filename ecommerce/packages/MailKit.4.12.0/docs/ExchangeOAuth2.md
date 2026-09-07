@@ -5,13 +5,13 @@
 * [Registering Your Application with Microsoft](#registering-your-application-with-microsoft)
 * [Configuring the Correct API Permissions for Your Application](#configuring-the-correct-api-permissions-for-your-application)
 * Desktop and Mobile Applications
-  * [Authenticating a Desktop or Mobile Application with OAuth2](#authenticating-a-desktop-or-mobile-application-with-oauth2)
+    * [Authenticating a Desktop or Mobile Application with OAuth2](#authenticating-a-desktop-or-mobile-application-with-oauth2)
 * Web Applications
-  * [Authenticating a Web Application with OAuth2](#authenticating-a-web-application-with-oauth2)
+    * [Authenticating a Web Application with OAuth2](#authenticating-a-web-application-with-oauth2)
 * Web Services
-  * [Registering Service Principals for Your Web Service](#registering-service-principals-for-your-web-service)
-  * [Granting Permissions for Your Web Service](#granting-permissions-for-your-web-service)
-  * [Authenticating a Web Service with OAuth2](#authenticating-a-web-service-with-oauth2)
+    * [Registering Service Principals for Your Web Service](#registering-service-principals-for-your-web-service)
+    * [Granting Permissions for Your Web Service](#granting-permissions-for-your-web-service)
+    * [Authenticating a Web Service with OAuth2](#authenticating-a-web-service-with-oauth2)
 * [Additional Resources](#additional-resources)
 
 ## Registering Your Application with Microsoft
@@ -23,20 +23,21 @@ and follow the instructions.
 
 ## Configuring the Correct API Permissions for Your Application
 
-There are several different API permissions that you may want to configure depending on which protocols your application intends to use.
+There are several different API permissions that you may want to configure depending on which protocols your application
+intends to use.
 
-Follow the instructions for [adding the POP, IMAP, and/or SMTP permissions to your Entra AD application](https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth#use-client-credentials-grant-flow-to-authenticate-smtp-imap-and-pop-connections).
+Follow the instructions
+for [adding the POP, IMAP, and/or SMTP permissions to your Entra AD application](https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth#use-client-credentials-grant-flow-to-authenticate-smtp-imap-and-pop-connections).
 
 ## Desktop and Mobile Applications
 
 ### Authenticating a Desktop or Mobile Application with OAuth2
 
-Now that you have the **Client ID** and **Tenant ID** strings, you'll need to plug those values into
-your application.
+Now that you have the **Client ID** and **Tenant ID** strings, you'll need to plug those values into your application.
 
-The following sample code uses the [Microsoft.Identity.Client](https://www.nuget.org/packages/Microsoft.Identity.Client/)
-nuget package for obtaining the access token which will be needed by MailKit to pass on to the Exchange
-server.
+The following sample code uses
+the [Microsoft.Identity.Client](https://www.nuget.org/packages/Microsoft.Identity.Client/)
+nuget package for obtaining the access token which will be needed by MailKit to pass on to the Exchange server.
 
 ```csharp
 static async Task<AuthenticationResult> GetPublicClientOAuth2CredentialsAsync (string protocol, string emailAddress, CancellationToken cancellationToken = default)
@@ -116,9 +117,8 @@ using (var client = new SmtpClient ()) {
 }
 ```
 
-Note: Once you've acquired an auth token using the interactive method above, you can avoid prompting the user
-if you cache the `result.Account` information and then silently reacquire auth tokens in the future using
-the following code:
+Note: Once you've acquired an auth token using the interactive method above, you can avoid prompting the user if you
+cache the `result.Account` information and then silently reacquire auth tokens in the future using the following code:
 
 ```csharp
 var result = await publicClientApplication.AcquireTokenSilent(scopes, account).ExecuteAsync(cancellationToken);
@@ -257,7 +257,8 @@ public async Task TestImapAsync (string ident)
 
 Once your web service has been registered, the tenant admin will need to register your service principal.
 
-To use the New-ServicePrincipal cmdlet, open an [Azure Powershell](https://learn.microsoft.com/en-us/powershell/azure/new-azureps-module-az?view=azps-10.2.0)
+To use the New-ServicePrincipal cmdlet, open
+an [Azure Powershell](https://learn.microsoft.com/en-us/powershell/azure/new-azureps-module-az?view=azps-10.2.0)
 terminal and install ExchangeOnlineManagement and connect to your tenant as shown below:
 
 ```powershell
@@ -274,15 +275,15 @@ New-ServicePrincipal -AppId <APPLICATION_ID> -ObjectId <OBJECT_ID> [-Organizatio
 
 ### Granting Permissions for Your Web Service
 
-In order to grant permissions for your web service to access an Office365 and/or Exchange account, you'll need to first get the
-Service Principal ID registered in the previous step using the following command:
+In order to grant permissions for your web service to access an Office365 and/or Exchange account, you'll need to first
+get the Service Principal ID registered in the previous step using the following command:
 
 ```powershell
 Get-ServicePrincipal | fl
 ```
 
-Once you have the Service Principal ID for your web service, use the following command to add full
-mailbox permissions for the email account that your web service will be accessing:
+Once you have the Service Principal ID for your web service, use the following command to add full mailbox permissions
+for the email account that your web service will be accessing:
 
 ```powershelllo;.k,;
 Add-MailboxPermission -Identity "john.smith@example.com" -User 
@@ -291,12 +292,11 @@ Add-MailboxPermission -Identity "john.smith@example.com" -User
 
 ### Authenticating a Web Service with OAuth2
 
-Now that you have the **Client ID** and **Tenant ID** strings, you'll need to plug those values into
-your application.
+Now that you have the **Client ID** and **Tenant ID** strings, you'll need to plug those values into your application.
 
-The following sample code uses the [Microsoft.Identity.Client](https://www.nuget.org/packages/Microsoft.Identity.Client/)
-nuget package for obtaining the access token which will be needed by MailKit to pass on to the Exchange
-server.
+The following sample code uses
+the [Microsoft.Identity.Client](https://www.nuget.org/packages/Microsoft.Identity.Client/)
+nuget package for obtaining the access token which will be needed by MailKit to pass on to the Exchange server.
 
 ```csharp
 static async Task<AuthenticationResult> GetConfidentialClientOAuth2CredentialsAsync (string protocol, CancellationToken cancellationToken = default)
@@ -352,5 +352,6 @@ using (var client = new SmtpClient ()) {
 
 ## Additional Resources
 
-For more information, check out the [Microsoft.Identity.Client](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client?view=azure-dotnet)
+For more information, check out
+the [Microsoft.Identity.Client](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identity.client?view=azure-dotnet)
 documentation.

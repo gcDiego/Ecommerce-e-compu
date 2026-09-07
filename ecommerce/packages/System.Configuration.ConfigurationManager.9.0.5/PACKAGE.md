@@ -2,7 +2,10 @@
 
 <!-- A description of the package and where one can find more documentation -->
 
-Provides types that support using XML configuration files (`app.config`). This package exists only to support migrating existing .NET Framework code that already uses System.Configuration. When writing new code, use another configuration system instead, such as [Microsoft.Extensions.Configuration](https://www.nuget.org/packages/Microsoft.Extensions.Configuration/).
+Provides types that support using XML configuration files (`app.config`). This package exists only to support migrating
+existing .NET Framework code that already uses System.Configuration. When writing new code, use another configuration
+system instead, such
+as [Microsoft.Extensions.Configuration](https://www.nuget.org/packages/Microsoft.Extensions.Configuration/).
 
 ## How to Use
 
@@ -83,4 +86,6 @@ The main types provided by this library are:
 
 <!-- How to provide feedback on this package and contribute to it -->
 
-System.Configuration.ConfigurationManager is released as open source under the [MIT license](https://licenses.nuget.org/MIT). Bug reports and contributions are welcome at [the GitHub repository](https://github.com/dotnet/runtime).
+System.Configuration.ConfigurationManager is released as open source under
+the [MIT license](https://licenses.nuget.org/MIT). Bug reports and contributions are welcome
+at [the GitHub repository](https://github.com/dotnet/runtime).

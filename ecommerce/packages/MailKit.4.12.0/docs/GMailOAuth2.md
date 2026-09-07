@@ -3,8 +3,8 @@
 ## Quick Index
 
 * [Setting up OAuth2 for use with Google Mail](#setting-up-oauth2-for-use-with-google-mail)
-  * [Register Your Application with Google](#register-your-application-with-google)
-  * [Obtaining an OAuth2 Client ID and Secret](#obtaining-an-oauth2-client-id-and-secret)
+    * [Register Your Application with Google](#register-your-application-with-google)
+    * [Obtaining an OAuth2 Client ID and Secret](#obtaining-an-oauth2-client-id-and-secret)
 * [Authenticating a Desktop App with the OAuth2 Client ID and Secret](#authenticating-a-desktop-app-with-the-oauth2-client-id-and-secret)
 * [Authenticating an ASP.NET Web App with the OAuth2 Client ID and Secret](#authenticating-an-aspnet-web-app-with-the-oauth2-client-id-and-secret)
 
@@ -22,8 +22,8 @@ Click the **New Project** button.
 
 ![Click "New Project"](https://github.com/jstedfast/MailKit/blob/master/Documentation/media/google-developer-console/click-new-project.png)
 
-Fill in the name **Project Name**, and if appropriate, select the **Organization** that your program
-should be associated with. Then click *Create*.
+Fill in the name **Project Name**, and if appropriate, select the **Organization** that your program should be
+associated with. Then click *Create*.
 
 ![Create New Project](https://github.com/jstedfast/MailKit/blob/master/Documentation/media/google-developer-console/create-new-project.png)
 
@@ -46,24 +46,23 @@ Click **+ Create Credentials** and then select **OAuth client ID**.
 
 ![Click "Create Credentials"](https://github.com/jstedfast/MailKit/blob/master/Documentation/media/google-developer-console/click-create-credentials.png)
 
-Select the **Other** radio item in the **Application type** section and then type in a name to use for the OAuth
-client ID. Once completed, click **Create**.
+Select the **Other** radio item in the **Application type** section and then type in a name to use for the OAuth client
+ID. Once completed, click **Create**.
 
 ![Select "Other"](https://github.com/jstedfast/MailKit/blob/master/Documentation/media/google-developer-console/select-application-type-other.png)
 
-At this point, you will be presented with a web dialog that will allow you to copy the **Client ID** and
-**Client Secret** strings into your clipboard to paste them into your program.
+At this point, you will be presented with a web dialog that will allow you to copy the **Client ID** and **Client
+Secret** strings into your clipboard to paste them into your program.
 
 ![Client ID and Secret](https://github.com/jstedfast/MailKit/blob/master/Documentation/media/google-developer-console/client-id-and-secret.png)
 
 ## Authenticating a Desktop App with the OAuth2 Client ID and Secret
 
-Now that you have the **Client ID** and **Client Secret** strings, you'll need to plug those values into
-your application.
+Now that you have the **Client ID** and **Client Secret** strings, you'll need to plug those values into your
+application.
 
 The following sample code uses the [Google.Apis.Auth](https://www.nuget.org/packages/Google.Apis.Auth/)
-nuget package for obtaining the access token which will be needed by MailKit to pass on to the GMail
-server.
+nuget package for obtaining the access token which will be needed by MailKit to pass on to the GMail server.
 
 ```csharp
 const string GMailAccount = "username@gmail.com";
@@ -101,12 +100,11 @@ using (var client = new ImapClient ()) {
 
 ## Authenticating an ASP.NET Web App with the OAuth2 Client ID and Secret
 
-Now that you have the **Client ID** and **Client Secret** strings, you'll need to plug those values into
-your application.
+Now that you have the **Client ID** and **Client Secret** strings, you'll need to plug those values into your
+application.
 
 The following sample code uses the [Google.Apis.Auth](https://www.nuget.org/packages/Google.Apis.Auth/)
-nuget package for obtaining the access token which will be needed by MailKit to pass on to the GMail
-server.
+nuget package for obtaining the access token which will be needed by MailKit to pass on to the GMail server.
 
 Add Google Authentication processor to your **Program.cs**.
 
@@ -146,7 +144,8 @@ app.UseAuthentication ();
 app.UseAuthorization ();
 ```
 
-Now, using the **GoogleScopedAuthorizeAttribute**, you can request scopes saved in a library as constants and request tokens for these scopes.
+Now, using the **GoogleScopedAuthorizeAttribute**, you can request scopes saved in a library as constants and request
+tokens for these scopes.
 
 ```csharp
 [GoogleScopedAuthorize(DriveService.ScopeConstants.DriveReadonly)]
@@ -164,6 +163,8 @@ public async Task AuthenticateAsync ([FromServices] IGoogleAuthProvider auth)
 }
 ```
 
-All of that and more has been described in Google's [OAuth 2.0](https://developers.google.com/api-client-library/dotnet/guide/aaa_oauth#web-applications-aspnet-mvc)
-documentation. However, be careful since [Asp.Net MVC](https://developers.google.com/api-client-library/dotnet/guide/aaa_oauth#web-applications-asp.net-mvc)
+All of that and more has been described in
+Google's [OAuth 2.0](https://developers.google.com/api-client-library/dotnet/guide/aaa_oauth#web-applications-aspnet-mvc)
+documentation. However, be careful
+since [Asp.Net MVC](https://developers.google.com/api-client-library/dotnet/guide/aaa_oauth#web-applications-asp.net-mvc)
 does not work for Asp.Net Core.

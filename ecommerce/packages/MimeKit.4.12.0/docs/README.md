@@ -1,65 +1,66 @@
 # MimeKit
 
-|  Package  |Latest Release|Latest Build|
-|:----------|:------------:|:----------:|
-|**MimeKit**|[![MimeKit NuGet](https://img.shields.io/nuget/v/MimeKit.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MimeKit)![MimeKit NuGet Downloads](https://img.shields.io/nuget/dt/MimeKit.svg?style=flat-square)|[![MimeKit MyGet](https://img.shields.io/myget/mimekit/v/MimeKit.svg?logo=nuget&style=flat-square&label=myget)](https://www.myget.org/feed/mimekit/package/nuget/MimeKit)|
-|**MimeKitLite**|[![MimeKitLite NuGet](https://img.shields.io/nuget/v/MimeKitLite.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MimeKitLite)![MimeKitLite NuGet Downloads](https://img.shields.io/nuget/dt/MimeKitLite.svg?style=flat-square)||
-|**MailKit**|[![MailKit NuGet](https://img.shields.io/nuget/v/MailKit.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MailKit)![MailKit NuGet Downloads](https://img.shields.io/nuget/dt/MailKit.svg?style=flat-square)|[![MailKit MyGet](https://img.shields.io/myget/mimekit/v/MailKit.svg?logo=nuget&style=flat-square&label=myget)](https://www.myget.org/feed/mimekit/package/nuget/MailKit)|
-|**MailKitLite**|[![MailKitLite NuGet](https://img.shields.io/nuget/v/MailKitLite.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MailKitLite)![MailKitLite NuGet Downloads](https://img.shields.io/nuget/dt/MailKitLite.svg?style=flat-square)||
+| Package         |                                                                                                                  Latest Release                                                                                                                  |                                                                               Latest Build                                                                                |
+|:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| **MimeKit**     |           [![MimeKit NuGet](https://img.shields.io/nuget/v/MimeKit.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MimeKit)![MimeKit NuGet Downloads](https://img.shields.io/nuget/dt/MimeKit.svg?style=flat-square)           | [![MimeKit MyGet](https://img.shields.io/myget/mimekit/v/MimeKit.svg?logo=nuget&style=flat-square&label=myget)](https://www.myget.org/feed/mimekit/package/nuget/MimeKit) |
+| **MimeKitLite** | [![MimeKitLite NuGet](https://img.shields.io/nuget/v/MimeKitLite.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MimeKitLite)![MimeKitLite NuGet Downloads](https://img.shields.io/nuget/dt/MimeKitLite.svg?style=flat-square) |                                                                                                                                                                           |
+| **MailKit**     |           [![MailKit NuGet](https://img.shields.io/nuget/v/MailKit.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MailKit)![MailKit NuGet Downloads](https://img.shields.io/nuget/dt/MailKit.svg?style=flat-square)           | [![MailKit MyGet](https://img.shields.io/myget/mimekit/v/MailKit.svg?logo=nuget&style=flat-square&label=myget)](https://www.myget.org/feed/mimekit/package/nuget/MailKit) |
+| **MailKitLite** | [![MailKitLite NuGet](https://img.shields.io/nuget/v/MailKitLite.svg?logo=nuget&style=flat-square)](https://www.nuget.org/packages/MailKitLite)![MailKitLite NuGet Downloads](https://img.shields.io/nuget/dt/MailKitLite.svg?style=flat-square) |                                                                                                                                                                           |
 
-
-|   Platform   |Build Status|Code Coverage|Static Analysis|
-|:-------------|:----------:|:-----------:|:-------------:|
-|**Linux/Mac**|[![Build Status](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml)|[![Code Coverage](https://coveralls.io/repos/jstedfast/MimeKit/badge.svg?branch=master)](https://coveralls.io/r/jstedfast/MimeKit?branch=master)|[![Static Analysis](https://scan.coverity.com/projects/3201/badge.svg)](https://scan.coverity.com/projects/3201)|
-|**Windows**  |[![Build Status](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml)|[![Code Coverage](https://coveralls.io/repos/jstedfast/MimeKit/badge.svg?branch=master)](https://coveralls.io/r/jstedfast/MimeKit?branch=master)|[![Static Analysis](https://scan.coverity.com/projects/3201/badge.svg)](https://scan.coverity.com/projects/3201)|
+| Platform      |                                                                               Build Status                                                                               |                                                                  Code Coverage                                                                   |                                                 Static Analysis                                                  |
+|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|
+| **Linux/Mac** | [![Build Status](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml) | [![Code Coverage](https://coveralls.io/repos/jstedfast/MimeKit/badge.svg?branch=master)](https://coveralls.io/r/jstedfast/MimeKit?branch=master) | [![Static Analysis](https://scan.coverity.com/projects/3201/badge.svg)](https://scan.coverity.com/projects/3201) |
+| **Windows**   | [![Build Status](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/jstedfast/MimeKit/actions/workflows/main.yml) | [![Code Coverage](https://coveralls.io/repos/jstedfast/MimeKit/badge.svg?branch=master)](https://coveralls.io/r/jstedfast/MimeKit?branch=master) | [![Static Analysis](https://scan.coverity.com/projects/3201/badge.svg)](https://scan.coverity.com/projects/3201) |
 
 ## What is MimeKit?
 
-MimeKit is a C# library which may be used for the creation and parsing of messages using the Multipurpose
-Internet Mail Extension (MIME), as defined by [numerous IETF specifications](https://github.com/jstedfast/MimeKit/blob/master/RFCs.md).
+MimeKit is a C# library which may be used for the creation and parsing of messages using the Multipurpose Internet Mail
+Extension (MIME), as defined
+by [numerous IETF specifications](https://github.com/jstedfast/MimeKit/blob/master/RFCs.md).
 
 ## Donate
 
-MimeKit is a personal open source project that I have put thousands of hours into perfecting with the
-goal of making it the very best MIME parser framework for .NET. I need your help to achieve this.
+MimeKit is a personal open source project that I have put thousands of hours into perfecting with the goal of making it
+the very best MIME parser framework for .NET. I need your help to achieve this.
 
-Donating helps pay for things such as web hosting, domain registration and licenses for developer tools
-such as a performance profiler, memory profiler, a static code analysis tool, and more. It also helps
-motivate me to continue working on the project.
+Donating helps pay for things such as web hosting, domain registration and licenses for developer tools such as a
+performance profiler, memory profiler, a static code analysis tool, and more. It also helps motivate me to continue
+working on the project.
 
-<a href="https://github.com/sponsors/jstedfast" _target="blank"><img alt="Click here to lend your support to MimeKit by making a donation!" src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif"></a>
+<a href="https://github.com/sponsors/jstedfast" _
+target="blank"><img alt="Click here to lend your support to MimeKit by making a donation!" src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif"></a>
 
 ## History
 
-As a developer and user of email clients, I had come to realize that the vast majority of email client
-(and server) software had less-than-satisfactory MIME implementations. More often than not these email clients
-created broken MIME messages and/or would incorrectly try to parse a MIME message thus subtracting from the full
-benefits that MIME was meant to provide. MimeKit is meant to address this issue by following the MIME specification
-as closely as possible while also providing programmers with an extremely easy to use high-level API.
+As a developer and user of email clients, I had come to realize that the vast majority of email client (and server)
+software had less-than-satisfactory MIME implementations. More often than not these email clients created broken MIME
+messages and/or would incorrectly try to parse a MIME message thus subtracting from the full benefits that MIME was
+meant to provide. MimeKit is meant to address this issue by following the MIME specification as closely as possible
+while also providing programmers with an extremely easy to use high-level API.
 
 This led me, at first, to implement another MIME parser library called [GMime](https://github.com/jstedfast/gmime)
 which is implemented in C and later added a C# binding called GMime-Sharp.
 
-Now that I typically find myself working in C# rather than lower level languages like C, I decided to
-begin writing a new parser in C# which would not depend on GMime. This would also allow me to have more
-flexibility in that I'd be able to use Generics and create a more .NET-compliant API.
+Now that I typically find myself working in C# rather than lower level languages like C, I decided to begin writing a
+new parser in C# which would not depend on GMime. This would also allow me to have more flexibility in that I'd be able
+to use Generics and create a more .NET-compliant API.
 
 ## Performance
 
-While mainstream beliefs may suggest that C# can never be as fast as C, it turns out that with a bit of creative
-parser design and a few clever optimizations 
+While mainstream beliefs may suggest that C# can never be as fast as C, it turns out that with a bit of creative parser
+design and a few clever optimizations
 <sup>[[1](http://jeffreystedfast.blogspot.com/2013/09/optimization-tips-tricks-used-by.html)]
-[[2](http://jeffreystedfast.blogspot.com/2013/10/optimization-tips-tricks-used-by.html)]</sup>, MimeKit's
-performance is actually [on par with GMime](http://jeffreystedfast.blogspot.com/2014/03/gmime-gets-speed-boost.html).
+[[2](http://jeffreystedfast.blogspot.com/2013/10/optimization-tips-tricks-used-by.html)]</sup>, MimeKit's performance is
+actually [on par with GMime](http://jeffreystedfast.blogspot.com/2014/03/gmime-gets-speed-boost.html).
 
 Since GMime is pretty well-known as a high-performance native MIME parser and MimeKit more-or-less matches GMime's
 performance, it stands to reason that MimeKit is likely unsurpassed in performance in the .NET MIME parser space.
 
 For a comparison, as I [blogged here](http://jeffreystedfast.blogspot.com/2013/10/optimization-tips-tricks-used-by.html)
-(I have since optimized MimeKit by at least another 30%), MimeKit is more than 25x faster than OpenPOP.NET, 75x
-faster than SharpMimeTools, and 65x faster than regex-based parsers. Even the commercial MIME parser offerings such
-as LimiLabs' Mail.dll and NewtonIdeas' Mime4Net cannot even come close to matching MimeKit's performance (they are
-both orders of magnitude slower than MimeKit).
+(I have since optimized MimeKit by at least another 30%), MimeKit is more than 25x faster than OpenPOP.NET, 75x faster
+than SharpMimeTools, and 65x faster than regex-based parsers. Even the commercial MIME parser offerings such as
+LimiLabs' Mail.dll and NewtonIdeas' Mime4Net cannot even come close to matching MimeKit's performance (they are both
+orders of magnitude slower than MimeKit).
 
 For comparison purposes, I've published a [MIME parser benchmark](https://github.com/jstedfast/MimeParserBenchmark)
 to make it easier for anyone else to compare the performance of MimeKit to their favourite MIME parser.
@@ -83,7 +84,6 @@ MIMER:          784.433441 seconds
 ```
 
 How does your MIME parser compare?
-
 
 ## License Information
 
@@ -124,16 +124,15 @@ Install-Package MimeKit
 
 ## Getting the Source Code
 
-First, you'll need to clone MimeKit from my GitHub repository. To do this using the command-line version of Git,
-you'll need to issue the following command in your terminal:
+First, you'll need to clone MimeKit from my GitHub repository. To do this using the command-line version of Git, you'll
+need to issue the following command in your terminal:
 
 ```bash
 git clone --recursive https://github.com/jstedfast/MimeKit.git
 ```
 
-If you are using [TortoiseGit](https://tortoisegit.org) on Windows, you'll need to right-click in the directory
-where you'd like to clone MimeKit and select **Git Clone...** in the menu. Once you do that, you'll get the
-following dialog:
+If you are using [TortoiseGit](https://tortoisegit.org) on Windows, you'll need to right-click in the directory where
+you'd like to clone MimeKit and select **Git Clone...** in the menu. Once you do that, you'll get the following dialog:
 
 ![Download the source code using TortoiseGit](https://github.com/jstedfast/MimeKit/blob/master/images/clone.png)
 
@@ -142,17 +141,17 @@ Fill in the areas outlined in red and then click **OK**. This will recursively c
 ## Updating the Source Code
 
 Occasionally you might want to update your local copy of the source code if I have made changes to MimeKit since you
-downloaded the source code in the step above. To do this using the command-line version fo Git, you'll need to issue
-the following commands in your terminal within the MimeKit directory:
+downloaded the source code in the step above. To do this using the command-line version fo Git, you'll need to issue the
+following commands in your terminal within the MimeKit directory:
 
 ```bash
 git pull
 git submodule update
 ```
 
-If you are using [TortoiseGit](https://tortoisegit.org) on Windows, you'll need to right-click on the MimeKit
-directory and select **Git Sync...** in the menu. Once you do that, you'll need to click the **Pull** and
-**Submodule Update** buttons in the following dialog:
+If you are using [TortoiseGit](https://tortoisegit.org) on Windows, you'll need to right-click on the MimeKit directory
+and select **Git Sync...** in the menu. Once you do that, you'll need to click the **Pull** and **Submodule Update**
+buttons in the following dialog:
 
 ![Update the source code using TortoiseGit](https://github.com/jstedfast/MimeKit/blob/master/images/update.png)
 
@@ -160,16 +159,19 @@ directory and select **Git Sync...** in the menu. Once you do that, you'll need 
 
 In the top-level MimeKit directory, there are a number of solution files; they are:
 
-* **MimeKit.sln** - includes projects for .NET Framework 4.6.2/4.7/4.8, .NETStandard 2.0/2.1, .NET 6.0 as well as the unit tests.
+* **MimeKit.sln** - includes projects for .NET Framework 4.6.2/4.7/4.8, .NETStandard 2.0/2.1, .NET 6.0 as well as the
+  unit tests.
 * **MimeKitLite.sln** - includes projects for the stripped-down versions of MimeKit that drop support for crypto.
 
 Once you've opened the appropriate MimeKit solution file in [Visual Studio](https://www.visualstudio.com/downloads/),
 you can choose the **Debug** or **Release** build configuration and then build.
 
-Both Visual Studio 2022 and Visual Studio 2019 should be able to build MimeKit without any issues, but older versions such as
-Visual Studio 2015 and 2017 will require modifications to the projects in order to build correctly. It has been reported that adding
-NuGet package references to [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers/) >= 3.6.0
-and [System.ValueTuple](https://www.nuget.org/packages/System.ValueTuple/) >= 4.5.0 will allow MimeKit to build successfully.
+Both Visual Studio 2022 and Visual Studio 2019 should be able to build MimeKit without any issues, but older versions
+such as Visual Studio 2015 and 2017 will require modifications to the projects in order to build correctly. It has been
+reported that adding NuGet package references
+to [Microsoft.Net.Compilers](https://www.nuget.org/packages/Microsoft.Net.Compilers/) >= 3.6.0
+and [System.ValueTuple](https://www.nuget.org/packages/System.ValueTuple/) >= 4.5.0 will allow MimeKit to build
+successfully.
 
 Note: The **Release** build will generate the xml API documentation, but the **Debug** build will not.
 
@@ -177,11 +179,11 @@ Note: The **Release** build will generate the xml API documentation, but the **D
 
 ### Parsing Messages
 
-One of the more common operations that MimeKit is meant for is parsing email messages from arbitrary streams.
-There are two ways of accomplishing this task.
+One of the more common operations that MimeKit is meant for is parsing email messages from arbitrary streams. There are
+two ways of accomplishing this task.
 
-The first way is to use one of the [Load](https://www.mimekit.net/docs/html/Overload_MimeKit_MimeMessage_Load.htm) methods
-on `MimeMessage`:
+The first way is to use one of the [Load](https://www.mimekit.net/docs/html/Overload_MimeKit_MimeMessage_Load.htm)
+methods on `MimeMessage`:
 
 ```csharp
 // Load a MimeMessage from a stream
@@ -195,9 +197,9 @@ Or you can load a message from a file path:
 var message = MimeMessage.Load ("message.eml");
 ```
 
-The second way is to use the [MimeParser](https://www.mimekit.net/docs/html/T_MimeKit_MimeParser.htm) class. For the most
-part, using the `MimeParser` directly is not necessary unless you wish to parse a Unix mbox file stream. However, this is
-how you would do it:
+The second way is to use the [MimeParser](https://www.mimekit.net/docs/html/T_MimeKit_MimeParser.htm) class. For the
+most part, using the `MimeParser` directly is not necessary unless you wish to parse a Unix mbox file stream. However,
+this is how you would do it:
 
 ```csharp
 // Load a MimeMessage from a stream
@@ -219,39 +221,35 @@ while (!parser.IsEndOfStream) {
 
 ### Getting the Body of a Message
 
-A common misunderstanding about email is that there is a well-defined message body and then a list
-of attachments. This is not really the case. The reality is that MIME is a tree structure of content,
-much like a file system.
+A common misunderstanding about email is that there is a well-defined message body and then a list of attachments. This
+is not really the case. The reality is that MIME is a tree structure of content, much like a file system.
 
-Luckily, MIME does define a set of general rules for how mail clients should interpret this tree
-structure of MIME parts. The `Content-Disposition` header is meant to provide hints to the receiving
-client as to which parts are meant to be displayed as part of the message body and which are meant
-to be interpreted as attachments.
+Luckily, MIME does define a set of general rules for how mail clients should interpret this tree structure of MIME
+parts. The `Content-Disposition` header is meant to provide hints to the receiving client as to which parts are meant to
+be displayed as part of the message body and which are meant to be interpreted as attachments.
 
 The `Content-Disposition` header will generally have one of two values: `inline` or `attachment`.
 
-The meaning of these values should be fairly obvious. If the value is `attachment`, then the content
-of said MIME part is meant to be presented as a file attachment separate from the core message.
-However, if the value is `inline`, then the content of that MIME part is meant to be displayed inline
-within the mail client's rendering of the core message body. If the `Content-Disposition` header does
-not exist, then it should be treated as if the value were `inline`.
+The meaning of these values should be fairly obvious. If the value is `attachment`, then the content of said MIME part
+is meant to be presented as a file attachment separate from the core message. However, if the value is `inline`, then
+the content of that MIME part is meant to be displayed inline within the mail client's rendering of the core message
+body. If the `Content-Disposition` header does not exist, then it should be treated as if the value were `inline`.
 
-Technically, every part that lacks a `Content-Disposition` header or that is marked as `inline`, then,
-is part of the core message body.
+Technically, every part that lacks a `Content-Disposition` header or that is marked as `inline`, then, is part of the
+core message body.
 
 There's a bit more to it than that, though.
 
-Modern MIME messages will often contain a `multipart/alternative` MIME container which will generally contain
-a `text/plain` and `text/html` version of the text that the sender wrote. The `text/html` version is typically
-formatted much closer to what the sender saw in his or her WYSIWYG editor than the `text/plain` version.
+Modern MIME messages will often contain a `multipart/alternative` MIME container which will generally contain a
+`text/plain` and `text/html` version of the text that the sender wrote. The `text/html` version is typically formatted
+much closer to what the sender saw in his or her WYSIWYG editor than the `text/plain` version.
 
-The reason for sending the message text in both formats is that not all mail clients are capable of displaying
-HTML.
+The reason for sending the message text in both formats is that not all mail clients are capable of displaying HTML.
 
 The receiving client should only display one of the alternative views contained within the `multipart/alternative`
-container. Since alternative views are listed in order of least faithful to most faithful with what the sender
-saw in his or her WYSIWYG editor, the receiving client *should* walk over the list of alternative views starting
-at the end and working backwards until it finds a part that it is capable of displaying.
+container. Since alternative views are listed in order of least faithful to most faithful with what the sender saw in
+his or her WYSIWYG editor, the receiving client *should* walk over the list of alternative views starting at the end and
+working backwards until it finds a part that it is capable of displaying.
 
 Example:
 
@@ -261,12 +259,11 @@ multipart/alternative
   text/html
 ```
 
-As seen in the example above, the `text/html` part is listed last because it is the most faithful to
-what the sender saw in his or her WYSIWYG editor when writing the message.
+As seen in the example above, the `text/html` part is listed last because it is the most faithful to what the sender saw
+in his or her WYSIWYG editor when writing the message.
 
 To make matters even more complicated, sometimes modern mail clients will use a `multipart/related`
-MIME container instead of a simple `text/html` part in order to embed images and other content
-within the HTML.
+MIME container instead of a simple `text/html` part in order to embed images and other content within the HTML.
 
 Example:
 
@@ -280,29 +277,26 @@ multipart/alternative
     image/png
 ```
 
-In the example above, one of the alternative views is a `multipart/related` container which contains
-an HTML version of the message body that references the sibling video and images.
+In the example above, one of the alternative views is a `multipart/related` container which contains an HTML version of
+the message body that references the sibling video and images.
 
-Now that you have a rough idea of how a message is structured and how to interpret various MIME entities,
-the next step is learning how to traverse the MIME tree using MimeKit.
+Now that you have a rough idea of how a message is structured and how to interpret various MIME entities, the next step
+is learning how to traverse the MIME tree using MimeKit.
 
 Note: For your convenience, MimeKit's `MimeMessage` class has two properties that can help you get the
-`text/plain` or `text/html` version of the message body. These are `TextBody` and `HtmlBody`,
-respectively.
+`text/plain` or `text/html` version of the message body. These are `TextBody` and `HtmlBody`, respectively.
 
-Keep in mind, however, that at least with the `HtmlBody` property, it may be that the HTML part is
-a child of a `multipart/related`, allowing it to refer to images and other types of media that
-are also contained within that `multipart/related` entity. This property is really only a convenience
-property and is not a really good substitute for traversing the MIME structure yourself so that you
-may properly interpret related content.
+Keep in mind, however, that at least with the `HtmlBody` property, it may be that the HTML part is a child of a
+`multipart/related`, allowing it to refer to images and other types of media that are also contained within that
+`multipart/related` entity. This property is really only a convenience property and is not a really good substitute for
+traversing the MIME structure yourself so that you may properly interpret related content.
 
 ### Traversing a MimeMessage
 
 The `MimeMessage.Body` is the top-level MIME entity of the message. Generally, it will either be a
 `TextPart` or a `Multipart`.
 
-As an example, if you wanted to rip out all of the attachments of a message, your code might look
-something like this:
+As an example, if you wanted to rip out all of the attachments of a message, your code might look something like this:
 
 ```csharp
 var attachments = new List<MimePart> ();
@@ -328,8 +322,8 @@ for (int i = 0; i < attachments.Count; i++)
 
 ### Quick and Dirty Enumeration of Message Body Parts
 
-If you would rather skip the proper way of traversing a MIME tree, another option that MimeKit provides
-is a simple enumerator over the message's body parts in a flat (depth-first) list.
+If you would rather skip the proper way of traversing a MIME tree, another option that MimeKit provides is a simple
+enumerator over the message's body parts in a flat (depth-first) list.
 
 You can access this flat list via the `BodyParts` property, like so:
 
@@ -339,17 +333,17 @@ foreach (var part in message.BodyParts) {
 }
 ```
 
-Another helper property on the MimeMessage class is the `Attachments` property which works
-much the same way as the `BodyParts` property except that it will only contain MIME parts
-which have a `Content-Disposition` header value that is set to `attachment`.
+Another helper property on the MimeMessage class is the `Attachments` property which works much the same way as the
+`BodyParts` property except that it will only contain MIME parts which have a `Content-Disposition` header value that is
+set to `attachment`.
 
 ### Getting the Decoded Content of a MIME Part
 
-At some point, you're going to want to extract the decoded content of a `MimePart` (such as an image) and
-save it to disk or feed it to a UI control to display it.
+At some point, you're going to want to extract the decoded content of a `MimePart` (such as an image) and save it to
+disk or feed it to a UI control to display it.
 
-Once you've found the `MimePart` object that you'd like to extract the content of, here's how you can
-save the decoded content to a file:
+Once you've found the `MimePart` object that you'd like to extract the content of, here's how you can save the decoded
+content to a file:
 
 ```csharp
 // This will get the name of the file as specified by the sending mail client.
@@ -361,8 +355,8 @@ using (var stream = File.Create (fileName)) {
 }
 ```
 
-You can also get access to the original raw content by "opening" the `Content`. This might be useful
-if you want to pass the content off to a UI control that can do its own loading from a stream.
+You can also get access to the original raw content by "opening" the `Content`. This might be useful if you want to pass
+the content off to a UI control that can do its own loading from a stream.
 
 ```csharp
 using (var stream = part.Content.Open ()) {
@@ -373,9 +367,9 @@ using (var stream = part.Content.Open ()) {
 }
 ```
 
-There are a number of useful filters that can be applied to a `FilteredStream`, so if you find this type of
-interface appealing, I suggest taking a look at the available filters in the `MimeKit.IO.Filters` namespace
-or even write your own! The possibilities are limited only by your imagination.
+There are a number of useful filters that can be applied to a `FilteredStream`, so if you find this type of interface
+appealing, I suggest taking a look at the available filters in the `MimeKit.IO.Filters` namespace or even write your
+own! The possibilities are limited only by your imagination.
 
 ### Creating a Simple Message
 
@@ -400,16 +394,16 @@ Will you be my +1?
 };
 ```
 
-A `TextPart` is a leaf-node MIME part with a text media-type. The first argument to the `TextPart` constructor
-specifies the media-subtype, in this case, "plain". Another media subtype you are probably familiar with
-is the "html" subtype. Some other examples include "enriched", "rtf", and "csv".
+A `TextPart` is a leaf-node MIME part with a text media-type. The first argument to the `TextPart` constructor specifies
+the media-subtype, in this case, "plain". Another media subtype you are probably familiar with is the "html" subtype.
+Some other examples include "enriched", "rtf", and "csv".
 
 The `Text` property is the easiest way to both get and set the string content of the MIME part.
 
 ### Creating a Message with Attachments
 
-Attachments are just like any other `MimePart`, the only difference is that they typically have
-a `Content-Disposition` header with a value of "attachment" instead of "inline" or no
+Attachments are just like any other `MimePart`, the only difference is that they typically have a `Content-Disposition`
+header with a value of "attachment" instead of "inline" or no
 `Content-Disposition` header at all.
 
 Typically, when a mail client adds attachments to a message, it will create a `multipart/mixed`
@@ -454,8 +448,8 @@ multipart.Add (attachment);
 message.Body = multipart;
 ```
 
-Of course, that is just a simple example. A lot of modern mail clients such as Outlook or Thunderbird will 
-send out both a `text/html` and a `text/plain` version of the message text. To do this, you'd create a
+Of course, that is just a simple example. A lot of modern mail clients such as Outlook or Thunderbird will send out both
+a `text/html` and a `text/plain` version of the message text. To do this, you'd create a
 `TextPart` for the `text/plain` part and another `TextPart` for the `text/html` part and then add them to a
 `multipart/alternative` like so:
 
@@ -484,8 +478,8 @@ message.Body = multipart;
 ### Creating a Message Using a BodyBuilder (not Arnold Schwarzenegger)
 
 If you are used to System.Net.Mail's API for creating messages, you will probably find using a `BodyBuilder`
-much more friendly than manually creating the tree of MIME parts. Here's how you could create a message body
-using a `BodyBuilder`:
+much more friendly than manually creating the tree of MIME parts. Here's how you could create a message body using a
+`BodyBuilder`:
 
 ```csharp
 var message = new MimeMessage ();
@@ -531,23 +525,21 @@ message.Body = builder.ToMessageBody ();
 
 ### Preparing to use MimeKit's S/MIME support
 
-Before you can begin using MimeKit's S/MIME support, you will need to decide which
-database to use for certificate storage.
+Before you can begin using MimeKit's S/MIME support, you will need to decide which database to use for certificate
+storage.
 
-If you are targetting any of the Xamarin platforms (or Linux), you won't need to do
-anything (although you certainly can if you want to) because, by default, I've
-configured MimeKit to use the Mono.Data.Sqlite binding to SQLite.
+If you are targetting any of the Xamarin platforms (or Linux), you won't need to do anything (although you certainly can
+if you want to) because, by default, I've configured MimeKit to use the Mono.Data.Sqlite binding to SQLite.
 
-If you are on any of the Windows platforms, however, you'll need to decide on whether
-to use one of the conveniently available backends such as the `WindowsSecureMimeContext`
-backend or the `TemporarySecureMimeContext` backend or else you'll need to pick a
-System.Data provider such as
-[System.Data.SQLite](https://www.nuget.org/packages/System.Data.SQLite) to use with
-the `DefaultSecureMimeContext` base class.
+If you are on any of the Windows platforms, however, you'll need to decide on whether to use one of the conveniently
+available backends such as the `WindowsSecureMimeContext`
+backend or the `TemporarySecureMimeContext` backend or else you'll need to pick a System.Data provider such as
+[System.Data.SQLite](https://www.nuget.org/packages/System.Data.SQLite) to use with the `DefaultSecureMimeContext` base
+class.
 
-If you opt for using the `DefaultSecureMimeContext` backend, you'll need to implement
-your own `DefaultSecureMimeContext` subclass. Luckily, it's very simple to do.
-Assuming you've chosen System.Data.SQLite, here's how you'd implement your own
+If you opt for using the `DefaultSecureMimeContext` backend, you'll need to implement your own
+`DefaultSecureMimeContext` subclass. Luckily, it's very simple to do. Assuming you've chosen System.Data.SQLite, here's
+how you'd implement your own
 `DefaultSecureMimeContext` class:
 
 ```csharp
@@ -587,15 +579,15 @@ CryptographyContext.Register (typeof (MySecureMimeContext));
 
 Now you are ready to encrypt, decrypt, sign and verify S/MIME messages!
 
-Note: If you choose to use the `WindowsSecureMimeContext` or `TemporarySecureMimeContext` backend,
-you should register that class instead.
+Note: If you choose to use the `WindowsSecureMimeContext` or `TemporarySecureMimeContext` backend, you should register
+that class instead.
 
 ### Preparing to use MimeKit's PGP/MIME support
 
-Like with S/MIME support, you also need to register your own `OpenPgpContext`. Unlike S/MIME, however,
-you don't need to choose a database if you subclass `GnuPGContext` because it uses GnuPG's PGP keyrings
-to load and store public and private keys. If you choose to subclass `GnuPGContext`, the only thing you
-you need to do is implement a password callback method:
+Like with S/MIME support, you also need to register your own `OpenPgpContext`. Unlike S/MIME, however, you don't need to
+choose a database if you subclass `GnuPGContext` because it uses GnuPG's PGP keyrings to load and store public and
+private keys. If you choose to subclass `GnuPGContext`, the only thing you you need to do is implement a password
+callback method:
 
 ```csharp
 using MimeKit.Cryptography;
@@ -697,8 +689,8 @@ using (var ctx = new MyGnuPGContext ()) {
 
 As mentioned earlier, PGP/MIME uses a `multipart/encrypted` part to encapsulate the encrypted content.
 
-A `multipart/encrypted` contains exactly 2 parts: the first `MimeEntity` is the version information while the
-second `MimeEntity` is the actual encrypted content and will typically be an `application/octet-stream`.
+A `multipart/encrypted` contains exactly 2 parts: the first `MimeEntity` is the version information while the second
+`MimeEntity` is the actual encrypted content and will typically be an `application/octet-stream`.
 
 The first thing you must do is find the `MultipartEncrypted` part (see the section on traversing MIME parts).
 
@@ -737,8 +729,8 @@ using (var ctx = new MySecureMimeContext ()) {
 }
 ```
 
-For S/MIME, if you have a way for the user to configure which S/MIME certificate to use
-as their signing certificate, you could also do something more like this:
+For S/MIME, if you have a way for the user to configure which S/MIME certificate to use as their signing certificate,
+you could also do something more like this:
 
 ```csharp
 // now to digitally sign our message body using our custom S/MIME cryptography context
@@ -751,14 +743,14 @@ using (var ctx = new MySecureMimeContext ()) {
 }
 ```
 
-If you'd prefer to use PGP instead of S/MIME, things work almost exactly the same except that you
-would use an OpenPGP cryptography context. For example, you might use a subclass of the
-`GnuPGContext` that comes with MimeKit if you want to re-use the user's GnuPG keyrings (you can't
-use `GnuPGContext` directly because it has no way of prompting the user for their passphrase).
+If you'd prefer to use PGP instead of S/MIME, things work almost exactly the same except that you would use an OpenPGP
+cryptography context. For example, you might use a subclass of the
+`GnuPGContext` that comes with MimeKit if you want to re-use the user's GnuPG keyrings (you can't use `GnuPGContext`
+directly because it has no way of prompting the user for their passphrase).
 
 For the sake of this example, let's pretend that you've written a minimal subclass of
-`MimeKit.Cryptography.GnuPGContext` that only overrides the `GetPassword()` method and
-that this subclass is called `MyGnuPGContext`.
+`MimeKit.Cryptography.GnuPGContext` that only overrides the `GetPassword()` method and that this subclass is called
+`MyGnuPGContext`.
 
 ```csharp
 // now to digitally sign our message body using our custom OpenPGP cryptography context
@@ -768,8 +760,8 @@ using (var ctx = new MyGnuPGContext ()) {
 }
 ```
 
-Just like S/MIME, however, you can also do your own PGP key lookups instead of
-relying on email addresses to match up with the user's private key.
+Just like S/MIME, however, you can also do your own PGP key lookups instead of relying on email addresses to match up
+with the user's private key.
 
 ```csharp
 // now to digitally sign our message body using our custom OpenPGP cryptography context
@@ -781,15 +773,15 @@ using (var ctx = new MyGnuPGContext ()) {
 
 ### Verifying S/MIME and PGP/MIME Digital Signatures
 
-As mentioned earlier, both S/MIME and PGP/MIME typically use a `multipart/signed` part to contain the
-signed content and the detached signature data.
+As mentioned earlier, both S/MIME and PGP/MIME typically use a `multipart/signed` part to contain the signed content and
+the detached signature data.
 
 A `multipart/signed` contains exactly 2 parts: the first `MimeEntity` is the signed content while the second
-`MimeEntity` is the detached signature and, by default, will either be an `ApplicationPgpSignature` part or
-an `ApplicationPkcs7Signature` part (depending on whether the sending client signed using OpenPGP or S/MIME).
+`MimeEntity` is the detached signature and, by default, will either be an `ApplicationPgpSignature` part or an
+`ApplicationPkcs7Signature` part (depending on whether the sending client signed using OpenPGP or S/MIME).
 
-Because the `multipart/signed` part may have been signed by multiple signers, it is important to
-verify each of the digital signatures (one for each signer) that are returned by the
+Because the `multipart/signed` part may have been signed by multiple signers, it is important to verify each of the
+digital signatures (one for each signer) that are returned by the
 `MultipartSigned.Verify()` method:
 
 ```csharp
@@ -845,9 +837,8 @@ if (entity is ApplicationPkcs7Mime) {
 
 ### Signing Messages with DKIM
 
-In addition to OpenPGP and S/MIME, MimeKit also supports DKIM signatures. To sign a message using DKIM,
-you'll first need a private key. In the following example, assume that the private key is saved in a
-file called **privatekey.pem**:
+In addition to OpenPGP and S/MIME, MimeKit also supports DKIM signatures. To sign a message using DKIM, you'll first
+need a private key. In the following example, assume that the private key is saved in a file called **privatekey.pem**:
 
 ```csharp
 var headers = new HeaderId[] { HeaderId.From, HeaderId.Subject, HeaderId.Date };
@@ -871,13 +862,12 @@ As you can see, it's fairly straight forward.
 ### Verifying DKIM Signatures
 
 Verifying DKIM signatures is slightly more involved than creating them because you'll need to write a custom
-implementation of the `IDkimPublicKeyLocator` interface. Typically, this custom class will need to download
-the DKIM public keys via your chosen DNS library as they are requested by MimeKit during verification of
-DKIM signature headers.
+implementation of the `IDkimPublicKeyLocator` interface. Typically, this custom class will need to download the DKIM
+public keys via your chosen DNS library as they are requested by MimeKit during verification of DKIM signature headers.
 
 Once you've implemented a custom `IDkimPublicKeyLocator`, verifying signatures is fairly trivial. Most of the work
-needed will be in the `IDkimPublicKeyLocator` implementation. As an example of how to implement this interface,
-here is one possible implementation using the [Heijden.DNS](https://www.nuget.org/packages/Heijden.Dns/) library:
+needed will be in the `IDkimPublicKeyLocator` implementation. As an example of how to implement this interface, here is
+one possible implementation using the [Heijden.DNS](https://www.nuget.org/packages/Heijden.Dns/) library:
 
 ```csharp
 using System;
@@ -1026,15 +1016,13 @@ namespace DkimVerifierExample
 
 ### Signing Messages with ARC
 
-Signing with ARC is similar to DKIM but quite a bit more involved. In order to sign with
-ARC, you must first validate that the existing message is authentictic and produce
-an ARC-Authentication-Results header containing the methods that you used to
-authenticate the message as well as their results.
+Signing with ARC is similar to DKIM but quite a bit more involved. In order to sign with ARC, you must first validate
+that the existing message is authentictic and produce an ARC-Authentication-Results header containing the methods that
+you used to authenticate the message as well as their results.
 
 The abstract [ArcSigner](https://www.mimekit.net/docs/html/T_MimeKit_Cryptography_ArcSigner.htm)
-class provided by MimeKit will need to be subclassed before it can be used. An example subclass
-that provides 2 different implementations for generating the ARC-Authentication-Results header
-can be seen below:
+class provided by MimeKit will need to be subclassed before it can be used. An example subclass that provides 2
+different implementations for generating the ARC-Authentication-Results header can be seen below:
 
 ```csharp
 using System;
@@ -1171,8 +1159,7 @@ namespace ArcSignerExample
 
 Once you have a custom `ArcSigner` class, the actual logic for signing is almost identical to DKIM.
 
-Note: As with the DKIM signing example above, assume that the private key is saved in a
-file called **privatekey.pem**:
+Note: As with the DKIM signing example above, assume that the private key is saved in a file called **privatekey.pem**:
 
 ```csharp
 var headers = new HeaderId[] { HeaderId.From, HeaderId.Subject, HeaderId.Date };
@@ -1193,11 +1180,10 @@ signer.Sign (message, headers); // or SignAsync
 ### Verifying ARC Signatures
 
 Just like with verifying DKIM signatures, you will need to implement the `IDkimPublicKeyLocator`
-interface. To see an example of how to implement this interface, see the DKIM signature verification
-example above.
+interface. To see an example of how to implement this interface, see the DKIM signature verification example above.
 
-The `ArcVerifier` works exactly the same as the `DkimVerifier` except that it is not necessary
-to provide a `Header` argument to the `Verify` or `VerifyAsync` method.
+The `ArcVerifier` works exactly the same as the `DkimVerifier` except that it is not necessary to provide a `Header`
+argument to the `Verify` or `VerifyAsync` method.
 
 ```csharp
 var verifier = new ArcVerifier (new DkimPublicKeyLocator ());
@@ -1209,18 +1195,19 @@ Console.WriteLine ("ARC results: {0}", results.Chain);
 
 ## Contributing
 
-The first thing you'll need to do is fork MimeKit to your own GitHub repository. For instructions on how to
-do that, see the section titled **Getting the Source Code**.
+The first thing you'll need to do is fork MimeKit to your own GitHub repository. For instructions on how to do that, see
+the section titled **Getting the Source Code**.
 
-If you use [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac/) or [MonoDevelop](https://monodevelop.com),
-all of the solution files are configured with the coding style used by MimeKit. If you use Visual Studio on Windows or
-some other editor, please try to maintain the existing coding style as best as you can.
+If you use [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac/)
+or [MonoDevelop](https://monodevelop.com), all of the solution files are configured with the coding style used by
+MimeKit. If you use Visual Studio on Windows or some other editor, please try to maintain the existing coding style as
+best as you can.
 
-Once you've got some changes that you'd like to submit upstream to the official MimeKit repository,
-send me a **Pull Request** and I will try to review your changes in a timely manner.
+Once you've got some changes that you'd like to submit upstream to the official MimeKit repository, send me a **Pull
+Request** and I will try to review your changes in a timely manner.
 
-If you'd like to contribute but don't have any particular features in mind to work on, check out the issue
-tracker and look for something that might pique your interest!
+If you'd like to contribute but don't have any particular features in mind to work on, check out the issue tracker and
+look for something that might pique your interest!
 
 ## Reporting Bugs
 
@@ -1231,8 +1218,7 @@ or
 
 Before opening a new issue, please search through any [existing issues](https://github.com/jstedfast/MimeKit/issues)
 to avoid submitting duplicates. It may also be worth checking the
-[FAQ](https://github.com/jstedfast/MimeKit/blob/master/FAQ.md) for common questions that other developers
-have had.
+[FAQ](https://github.com/jstedfast/MimeKit/blob/master/FAQ.md) for common questions that other developers have had.
 
 If you are getting an exception from somewhere within MimeKit, don't just provide the `Exception.Message`
 string. Please include the `Exception.StackTrace` as well. The `Message`, by itself, is often useless.
@@ -1247,4 +1233,6 @@ A copy of the XML-formatted API reference documentation is also included in the 
 
 MimeKit is a [.NET Foundation](https://www.dotnetfoundation.org/projects) project.
 
-This project has adopted the code of conduct defined by the [Contributor Covenant](https://contributor-covenant.org/) to clarify expected behavior in our community. For more information, see the [.NET Foundation Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct).
+This project has adopted the code of conduct defined by the [Contributor Covenant](https://contributor-covenant.org/) to
+clarify expected behavior in our community. For more information, see
+the [.NET Foundation Code of Conduct](https://www.dotnetfoundation.org/code-of-conduct).

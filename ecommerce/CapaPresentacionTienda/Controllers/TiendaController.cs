@@ -3,6 +3,7 @@ using CapaEntidad.Paypal;
 using CapaNegocio;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -23,63 +24,84 @@ namespace CapaPresentacionTienda.Controllers
             return View();
         }
 
-        public ActionResult DetalleProducto(int idproducto = 0)
+        public async Task<ActionResult> DetalleProducto(int idproducto = 0)
         {
-            Producto oProducto = new Producto();
-            bool convesion; 
+            Producto oProducto;
 
-            oProducto = new CN_Producto().Listar().Where(p => p.IdProducto == idproducto).FirstOrDefault();
-
-            if (oProducto != null)
+            if (UseCatalogApi())
             {
-                oProducto.Base64 = CN_Recursos.ConvertirBase64(Path.Combine(oProducto.RutaImagen, oProducto.NombreImagen), out convesion);
-                oProducto.Extension = Path.GetExtension(oProducto.NombreImagen);
+                oProducto = await new CatalogApiClient().ObtenerProductoAsync(idproducto);
+                if (oProducto != null)
+                {
+                    var imagenLegada = new CN_Producto().Listar().FirstOrDefault(p => p.IdProducto == idproducto);
+                    AgregarImagen(oProducto, imagenLegada);
+                }
             }
+            else
+            {
+                oProducto = new CN_Producto().Listar().FirstOrDefault(p => p.IdProducto == idproducto);
+                AgregarImagen(oProducto, oProducto);
+            }
+
             return View(oProducto);
         }
 
         [HttpGet]
 
-        public JsonResult ListarCategorias()
+        public async Task<JsonResult> ListarCategorias()
         {
-            List<Categoria> lista = new List<Categoria>();
-            lista = new CN_Categoria().Listar();
+            List<Categoria> lista = UseCatalogApi()
+                ? await new CatalogApiClient().ListarCategoriasAsync(true)
+                : new CN_Categoria().Listar();
             return Json(new {data = lista}, JsonRequestBehavior.AllowGet);
         }
         
         [HttpPost]
 
-        public JsonResult ListarMarcaporCategoria(int idcategoria)
+        public async Task<JsonResult> ListarMarcaporCategoria(int idcategoria)
         {
-           
-            List<Marca> lista = new List<Marca>();
-            lista = new CN_Marca().ListarMarcaporCategoria(idcategoria);
+            List<Marca> lista = UseCatalogApi()
+                ? await new CatalogApiClient().ListarMarcasPorCategoriaAsync(idcategoria)
+                : new CN_Marca().ListarMarcaporCategoria(idcategoria);
             return Json(new { data = lista }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
 
-        public JsonResult ListarProdcto(int idcategoria, int idmarca)
+        public async Task<JsonResult> ListarProdcto(int idcategoria, int idmarca)
         {
-            List<Producto> lista = new List<Producto>();
+            List<Producto> lista;
 
-            bool coversion; 
-
-            lista = new CN_Producto().Listar().Select(p => new Producto()
+            if (UseCatalogApi())
             {
-                IdProducto = p.IdProducto,
-                Nombre = p.Nombre,
-                Descripcion = p.Descripcion,
-                oMarca = p.oMarca,
-                oCategoria = p.oCategoria,
-                Precio = p.Precio,
-                Stock = p.Stock,
-                RutaImagen = p.RutaImagen,
-                Base64 = CN_Recursos.ConvertirBase64(Path.Combine(p.RutaImagen,p.NombreImagen), out coversion),
-                Extension = Path.GetExtension(p.NombreImagen),
-                Activo = p.Activo
+                lista = await new CatalogApiClient().ListarProductosAsync(idcategoria, idmarca);
+                var imagenesLegadas = new CN_Producto().Listar().ToDictionary(p => p.IdProducto);
+                foreach (var producto in lista)
+                {
+                    Producto imagenLegada;
+                    imagenesLegadas.TryGetValue(producto.IdProducto, out imagenLegada);
+                    AgregarImagen(producto, imagenLegada);
+                }
+            }
+            else
+            {
+                bool coversion;
+                lista = new CN_Producto().Listar().Select(p => new Producto()
+                {
+                    IdProducto = p.IdProducto,
+                    Nombre = p.Nombre,
+                    Descripcion = p.Descripcion,
+                    oMarca = p.oMarca,
+                    oCategoria = p.oCategoria,
+                    Precio = p.Precio,
+                    Stock = p.Stock,
+                    RutaImagen = p.RutaImagen,
+                    Base64 = CN_Recursos.ConvertirBase64(Path.Combine(p.RutaImagen,p.NombreImagen), out coversion),
+                    Extension = Path.GetExtension(p.NombreImagen),
+                    Activo = p.Activo
 
-            }).Where(p => p.oCategoria.IdCategoria == (idcategoria == 0 ? p.oCategoria.IdCategoria : idcategoria) && p.oMarca.IdMarca == (idmarca == 0 ? p.oMarca.IdMarca : idmarca) && p.Stock > 0 && p.Activo == true).ToList();
+                }).Where(p => p.oCategoria.IdCategoria == (idcategoria == 0 ? p.oCategoria.IdCategoria : idcategoria) && p.oMarca.IdMarca == (idmarca == 0 ? p.oMarca.IdMarca : idmarca) && p.Stock > 0 && p.Activo == true).ToList();
+            }
 
             var jsonresult = Json(new { data = lista }, JsonRequestBehavior.AllowGet); 
             jsonresult.MaxJsonLength = int.MaxValue;
@@ -366,5 +388,21 @@ namespace CapaPresentacionTienda.Controllers
             return View(olista);
         }
 
+        private static bool UseCatalogApi()
+        {
+            bool enabled;
+            return bool.TryParse(ConfigurationManager.AppSettings["Features:UseCatalogApi"], out enabled) && enabled;
+        }
+
+        private static void AgregarImagen(Producto producto, Producto imagenLegada)
+        {
+            if (producto == null || imagenLegada == null)
+                return;
+
+            bool conversion;
+            producto.Base64 = CN_Recursos.ConvertirBase64(
+                Path.Combine(imagenLegada.RutaImagen, imagenLegada.NombreImagen), out conversion);
+            producto.Extension = Path.GetExtension(imagenLegada.NombreImagen);
+        }
     }
 }
