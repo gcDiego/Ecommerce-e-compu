@@ -8,11 +8,11 @@ pruebas, despliegues y pendientes de cada incremento.
 
 ## Handoff rápido para la siguiente sesión
 
-> Leer esta sección primero. Resume el estado vigente y reemplaza la necesidad de revisar todo el historial antes de continuar.
+> Leer primero `HANDOFF_MIGRACION.md`. Esta sección conserva un resumen; el handoff contiene arquitectura, archivos, comandos, riesgos y el siguiente incremento completo.
 
 ### Objetivo activo
 
-Diseñar el primer corte de Cart Service con identidad derivada de JWT, manteniendo recuperación de contraseña pospuesta hasta autorizar su almacenamiento seguro.
+Completar la validación funcional de mutaciones de Cart Service mediante una cuenta de prueba y después migrar el checkout para que precios y totales se recalculen en servidor.
 
 ### Estado confirmado
 
@@ -28,17 +28,25 @@ Diseñar el primer corte de Cart Service con identidad derivada de JWT, mantenie
 - Identity Service exige externamente `ConnectionStrings__IdentityDatabase` y `Jwt__SigningKey`; la clave JWT debe tener al menos 32 caracteres.
 - Recuperación, cambio de contraseña y registro no fueron migrados porque requieren rediseñar hashes y notificaciones de forma segura.
 - La base de datos permanece sin cambios.
+- Admin y Tienda compilan con Mono/MSBuild y responden `200 OK` mediante XSP4 en macOS.
+- Cart Service tiene un primer corte .NET 8 compilado, protegido para rol `Customer` y conectado al esquema heredado sin modificarlo.
+- `GET /health` de Cart respondió `200 OK` y `Healthy` contra SQL Server Docker.
+- El acceso anónimo a `/api/v1/cart` respondió `401 Unauthorized`.
+- La suite completa ejecuta 30 pruebas aprobadas.
+- Tienda autentica clientes mediante Identity Service con feature flag y conserva Forms Authentication para navegación MVC.
+- El JWT se almacena únicamente en `Session` del servidor y se elimina al cerrar sesión.
+- Las acciones MVC de carrito consumen Cart Service cuando `Features:UseCartApi=true` y conservan `CN_Carrito` con el flag desactivado.
+- El flujo real Identity → Tienda Mono/XSP → Cart quedó validado para login, cantidad y listado sin modificar datos.
+- Identity emite ahora el claim interoperable `role`, consumido por servicios configurados con `MapInboundClaims=false`.
 
 ### Siguiente incremento exacto
 
-1. Inventariar `CN_Carrito`, `CD_Carrito`, tabla `CARRITO` y contratos JavaScript actuales.
-2. Diseñar endpoints para obtener, agregar, cambiar cantidad y quitar productos usando el `CustomerId` del JWT.
-3. No aceptar precios, nombres, totales ni identificadores de cliente enviados por la GUI.
-4. Mantener SQL Server y el esquema actual sin cambios durante el primer corte si sus restricciones lo permiten.
-5. Implementar validación de producto activo y cantidad positiva.
-6. Agregar pruebas de autorización, aislamiento entre clientes y manipulación de precios.
-7. Integrar Tienda mediante feature flag y conservar rollback a `CN_Carrito`.
-8. Extraer el envío de correo a Notification Service y retirar credenciales SMTP del código.
+1. Seleccionar un producto y una cuenta de prueba autorizados.
+2. Probar agregar, detectar duplicado, incrementar, decrementar y eliminar, restaurando el carrito al estado inicial.
+3. Validar `Features:UseIdentityApi=false` y `Features:UseCartApi=false` con una cuenta que aún sea compatible con el hash legado.
+4. Impedir configuraciones incoherentes donde Cart esté activo sin Identity.
+5. Migrar `ProcesarPago` para ignorar precios y totales enviados por JavaScript y reconstruirlos desde Cart/Catalog.
+6. Mantener PayPal y registro de venta en legado hasta separar Order y Payment Services.
 
 ### Restricciones
 
@@ -58,7 +66,7 @@ Diseñar el primer corte de Cart Service con identidad derivada de JWT, mantenie
 ### Validación mínima
 
 ```bash
-dotnet test Ecommerce.Services.sln --configuration Release
+dotnet test Ecommerce.Services.sln --configuration Release --no-restore
 curl -i http://localhost:5137/health
 curl -s http://localhost:5137/api/v1/categories | jq
 curl -s http://localhost:5137/api/v1/products | jq
@@ -72,7 +80,7 @@ http://localhost:5137/swagger
 
 ### Criterio de terminado del siguiente incremento
 
-Con `Features:UseCatalogApi=true`, la tienda debe mostrar categorías, marcas y productos usando Catalog Service sin alterar el contrato de sus vistas. Con el flag en `false`, debe conservarse el camino legado. Ambos modos deben quedar probados y documentados.
+Las mutaciones de Cart deben validarse contra SQL Server dejando el carrito de prueba en su estado inicial. El checkout debe ignorar precios y totales enviados por el navegador, reconstruirlos en servidor, conservar el esquema SQL y mantener rollback por feature flags. La solución .NET 8 y el legado Mono deben compilar y sus resultados reales deben quedar documentados.
 
 ## Alcance acordado
 
@@ -121,7 +129,7 @@ flowchart LR
 |----------------------|---------------------------------------------------------|-----------------------------------------------------------------------|----------------------------|
 | Catalog Service      | Productos, categorías, marcas e imágenes                | `CN_Producto`, `CN_Categoria`, `CN_Marca`, clases `CD_*` relacionadas | Validado contra SQL Server |
 | Identity Service     | Clientes, usuarios, autenticación, roles y recuperación | `CN_Cliente`, `CN_Usuarios`, controladores de acceso                  | Autenticación validada contra SQL Server |
-| Cart Service         | Carrito, productos y cantidades                         | `CN_Carrito`, `CD_Carrito`                                            | Pendiente                  |
+| Cart Service         | Carrito, productos y cantidades                         | `CN_Carrito`, `CD_Carrito`                                            | Primer corte validado localmente |
 | Order Service        | Ventas, detalle, checkout e historial                   | `CN_Venta`, `CD_Venta`                                                | Pendiente                  |
 | Payment Service      | Creación, captura y conciliación de PayPal              | `CN_Paypal`                                                           | Pendiente                  |
 | Location Service     | Estados, municipios y localidades                       | `CN_Ubicacion`, `CD_Ubicacion`                                        | Pendiente                  |
@@ -147,11 +155,105 @@ flowchart LR
 | Base de datos             | Sin cambios                | Se conserva la instancia y el esquema actuales                |
 | Plataforma ASP.NET Core   | Implementada               | Solución nueva fijada en .NET 8                               |
 | Catalog Service           | Validado contra SQL Server | API de lectura operativa con la base `ecommerce` en Docker    |
-| Integración con GUI       | En progreso                | Feature flag implementado; pendiente prueba en Windows/IIS Express   |
+| Integración con GUI       | En progreso                | Mono/XSP4 validado; pendiente puente JWT para Cart              |
 | CI/CD de servicios nuevos | No iniciado                | Compilación y pruebas locales disponibles                     |
 | Observabilidad            | Parcial                    | Problem Details y health check de SQL incorporados            |
 
 ## Registro cronológico
+
+### 2026-09-11 — Integración MVC de Identity y lecturas de Cart validada en Mono
+
+| Campo | Valor |
+|---|---|
+| Tipo | funcionalidad, integración y seguridad |
+| Servicios | Identity Service, Cart Service y CapaPresentacionTienda |
+| Estado | lecturas integradas y validadas contra SQL Server |
+
+#### Cambios realizados
+
+- El login MVC puede delegar autenticación a Identity Service mediante `Features:UseIdentityApi`.
+- La respuesta se transforma a `Cliente` sin hash y el JWT queda exclusivamente en sesión del servidor.
+- Forms Authentication se conserva; la cookie se agrega mediante la respuesta MVC para compatibilidad con continuaciones async de Mono/XSP.
+- Se agregó `CartApiClient` y las cinco acciones MVC del carrito alternan entre Cart Service y `CN_Carrito`.
+- Las imágenes continúan enriqueciéndose desde almacenamiento legado sin exponer rutas desde los servicios.
+- Se corrigió el JWT para emitir `role` como claim corto interoperable.
+
+#### Base de datos
+
+- Sin cambios de esquema, funciones, procedimientos ni datos durante esta validación de lectura.
+- Cart Service continúa reutilizando los objetos SQL heredados.
+
+#### Evidencia
+
+- `dotnet test Ecommerce.Services.sln --configuration Release --no-restore`: 30 pruebas aprobadas, incluida la regresión del claim `role`.
+- `msbuild ecommerce.sln /t:Build /p:Configuration=Debug`: compilación exitosa de las cinco capas mediante Mono.
+- Login MVC mediante Identity respondió `302`, Tienda respondió `200`, cantidad devolvió un resultado JSON y listado respondió `200` mediante Cart Service.
+- Las configuraciones XML se validaron con `xmllint`.
+- No se registraron credenciales ni tokens.
+
+#### Rollback
+
+- `Features:UseCartApi=false` restaura las llamadas a `CN_Carrito`.
+- `Features:UseIdentityApi=false` restaura el login heredado para cuentas cuyo hash siga siendo compatible con SHA-256.
+
+#### Riesgos y deuda técnica
+
+- Las cuentas ya migradas a PBKDF2 no pueden autenticarse por el login SHA-256 heredado; para ellas Identity Service es dependencia obligatoria.
+- El token dura hasta 30 minutos y todavía no existe renovación silenciosa.
+- Las mutaciones del carrito aún requieren validación real controlada.
+- `ProcesarPago` todavía acepta objetos y precios construidos por JavaScript y debe endurecerse antes de extraer Orders.
+
+#### Próximos pasos
+
+- Validar mutaciones reversibles de Cart y asegurar el cálculo server-side del checkout.
+
+### 2026-09-07 — Primer corte de Cart Service sin cambios de base de datos
+
+| Campo | Valor |
+|---|---|
+| Tipo | funcionalidad, infraestructura y seguridad |
+| Servicio | Cart Service |
+| Estado | validado localmente contra SQL Server |
+
+#### Cambios realizados
+
+- Se crearon `Cart.Api`, `Cart.Application`, `Cart.Domain` y `Cart.Infrastructure` sobre .NET 8.
+- Se agregaron contratos para consultar, agregar, cambiar cantidad y eliminar productos del carrito.
+- El identificador del cliente se deriva exclusivamente del claim `sub` de un JWT válido con rol `Customer`.
+- Los contratos no aceptan identificador de cliente, precio, nombre ni total desde el consumidor.
+- Precios y cantidades se obtienen desde el adaptador SQL y el total se calcula con datos del servidor.
+- Se reutilizan `fn_obtenerCarritoCliente`, `sp_ExisteCarrito`, `sp_OperacionCarrito` y `sp_EliminarCarrito`.
+
+#### Base de datos
+
+- Sin cambios de esquema, funciones, procedimientos ni datos durante la validación.
+- Se confirmó que `CARRITO` conserva `IdCarrito`, `IdCliente`, `IdProducto` y `Cantidad`, con FKs hacia `CLIENTE` y `PRODUCTO`.
+
+#### Contratos agregados
+
+- `GET /api/v1/cart`.
+- `POST /api/v1/cart/items/{productId}`.
+- `PATCH /api/v1/cart/items/{productId}`.
+- `DELETE /api/v1/cart/items/{productId}`.
+- `GET /health`.
+
+#### Pruebas ejecutadas
+
+- `dotnet test Ecommerce.Services.sln --configuration Release --no-restore`: 29 pruebas aprobadas.
+- Cart aporta dos pruebas unitarias y tres HTTP.
+- Se cubrieron total calculado con precio del repositorio, duplicados, acceso anónimo, rechazo de Administrator y uso del `sub` de Customer.
+- `GET /health` respondió `200 OK` y `Healthy` contra la base `ecommerce` real.
+- `GET /api/v1/cart` sin token respondió `401 Unauthorized`.
+
+#### Compatibilidad y GUI
+
+- La ejecución documentada con Mono/MSBuild/XSP4 confirma que Admin y Tienda pueden utilizarse como referencia funcional en macOS.
+- La GUI aún usa Forms Authentication y sesión; antes de activar Cart Service necesita un puente de servidor hacia Identity Service para conservar el JWT fuera del navegador.
+- El carrito legado no fue modificado y continúa siendo el rollback.
+
+#### Próximos pasos
+
+- Integrar login MVC con Identity Service y después activar Cart mediante feature flag.
 
 ### 2026-09-07 — Validación JWT incorporada en Catalog Service
 
@@ -252,7 +354,9 @@ flowchart LR
 - Un login real autorizado migró correctamente un hash SHA-256 de 64 caracteres al formato PBKDF2 de 84 caracteres.
 - El segundo login con la misma contraseña respondió `200 OK` usando ya el hash adaptativo.
 - Una contraseña deliberadamente inválida respondió `401 Unauthorized` después de la migración.
-- No se registraron correo, contraseña, token ni contenido del hash en archivos o documentación.
+- No se registraron correo, contraseña, token ni datos personales en este documento.
+- Relacionar cada decisión arquitectónica con un ADR cuando afecte a más de un servicio.
+- Utilizar fechas ISO 8601 (`AAAA-MM-DD`).
 
 #### Rollback
 
@@ -286,7 +390,8 @@ flowchart LR
 #### Pruebas ejecutadas
 
 - `dotnet test Ecommerce.Services.sln --configuration Release --no-restore`.
-- Resultado total: 11 pruebas aprobadas; Identity Service aporta cinco unitarias y dos HTTP.
+- Resultado total: 11 pruebas aprobadas.
+- Identity Service aporta cinco unitarias y dos HTTP.
 - Se cubrieron credenciales válidas, contraseña inválida, cuenta inactiva, hashes malformados, contrato JWT simulado y ausencia de hashes en respuestas.
 - `GET /health` respondió `200 OK` y `Healthy` usando la base real `ecommerce` en SQL Server Docker.
 - Un administrador real y activo se autenticó correctamente con `accountType: "Administrator"`; la respuesta incluyó JWT, expiración y `mustResetPassword: false`.
@@ -332,7 +437,7 @@ flowchart LR
 
 #### Pruebas ejecutadas
 
-- `dotnet test Ecommerce.Services.sln --configuration Release`: 4 pruebas aprobadas.
+- `dotnet test Ecommerce.Services.sln --configuration Release`.
 - `xmllint --noout CapaPresentacionTienda/Web.config CapaPresentacionTienda/Web.Debug.config`: configuración XML válida.
 - La compilación de `CapaPresentacionTienda` no pudo ejecutarse en macOS porque no están disponibles los targets `Microsoft.WebApplication.targets`; queda pendiente compilar y validar en Windows con Visual Studio/IIS Express.
 
@@ -623,6 +728,9 @@ Describir qué problema resuelve este incremento.
 
 | Versión | Fecha      | Descripción                                                       |
 |---------|------------|-------------------------------------------------------------------|
+| 2.2     | 2026-09-11 | Handoff técnico autoritativo para continuar en otra conversación   |
+| 2.1     | 2026-09-11 | Integración MVC de Identity y lecturas de Cart validada en Mono    |
+| 2.0     | 2026-09-11 | Primer corte de Cart Service y GUI validada mediante Mono/XSP4     |
 | 1.9     | 2026-09-07 | Validación JWT en Catalog y recuperación pospuesta                 |
 | 1.8     | 2026-09-07 | Rehash progresivo validado con una cuenta real autorizada          |
 | 1.7     | 2026-09-07 | Rehash progresivo y cambio autenticado implementados localmente    |

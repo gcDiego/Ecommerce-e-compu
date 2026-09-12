@@ -123,6 +123,8 @@
         <Compile Include="Controllers\AccesoController.cs"/>
         <Compile Include="Controllers\TiendaController.cs"/>
         <Compile Include="CatalogApiClient.cs"/>
+        <Compile Include="IdentityApiClient.cs"/>
+        <Compile Include="CartApiClient.cs"/>
         <Compile Include="Filter\ValidarSessionAttribute.cs"/>
         <Compile Include="Global.asax.cs">
             <DependentUpon>Global.asax</DependentUpon>

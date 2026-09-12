@@ -112,8 +112,14 @@ namespace CapaPresentacionTienda.Controllers
 
         [HttpPost] 
 
-        public JsonResult AgregarCarrito(int idproducto)
+        public async Task<JsonResult> AgregarCarrito(int idproducto)
         {
+            if (UseCartApi())
+            {
+                var result = await CreateCartApiClient().AgregarAsync(idproducto);
+                return Json(new { respuesta = result.Success, mensaje = result.Message }, JsonRequestBehavior.AllowGet);
+            }
+
             int idcliente = ((Cliente)Session["Cliente"]).IdCliente;
 
             bool existe = new CN_Carrito().ExisteCarrito(idcliente, idproducto);
@@ -137,8 +143,14 @@ namespace CapaPresentacionTienda.Controllers
 
         [HttpGet]
 
-        public JsonResult CantidadEnCarrito()
+        public async Task<JsonResult> CantidadEnCarrito()
         {
+            if (UseCartApi())
+            {
+                var snapshot = await CreateCartApiClient().ObtenerAsync();
+                return Json(new { cantidad = snapshot.CantidadProductos }, JsonRequestBehavior.AllowGet);
+            }
+
             int idcliente = ((Cliente)Session["Cliente"]).IdCliente;
             int cantidad = new CN_Carrito().CantidadEnCarrito(idcliente);
             return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
@@ -146,8 +158,22 @@ namespace CapaPresentacionTienda.Controllers
 
         [HttpPost]
 
-        public JsonResult ListarProductosCarrito()
+        public async Task<JsonResult> ListarProductosCarrito()
         {
+            if (UseCartApi())
+            {
+                var snapshot = await CreateCartApiClient().ObtenerAsync();
+                var imagenesLegadas = new CN_Producto().Listar().ToDictionary(p => p.IdProducto);
+                foreach (var item in snapshot.Items)
+                {
+                    Producto imagenLegada;
+                    imagenesLegadas.TryGetValue(item.oProducto.IdProducto, out imagenLegada);
+                    AgregarImagen(item.oProducto, imagenLegada);
+                }
+
+                return Json(new { data = snapshot.Items }, JsonRequestBehavior.AllowGet);
+            }
+
             int idcliente = ((Cliente)Session["cliente"]).IdCliente;
 
             List<Carrito> olista = new List<Carrito>();
@@ -173,8 +199,14 @@ namespace CapaPresentacionTienda.Controllers
         }
 
         [HttpPost]
-        public JsonResult OperacionCarrito(int idproducto, bool sumar)
+        public async Task<JsonResult> OperacionCarrito(int idproducto, bool sumar)
         {
+            if (UseCartApi())
+            {
+                var result = await CreateCartApiClient().CambiarCantidadAsync(idproducto, sumar);
+                return Json(new { respuesta = result.Success, mensaje = result.Message }, JsonRequestBehavior.AllowGet);
+            }
+
             int idcliente = ((Cliente)Session["Cliente"]).IdCliente;
 
             string mensaje = string.Empty;
@@ -188,8 +220,14 @@ namespace CapaPresentacionTienda.Controllers
 
         [HttpPost]
 
-        public JsonResult EliminarCarrito(int idproducto)
+        public async Task<JsonResult> EliminarCarrito(int idproducto)
         {
+            if (UseCartApi())
+            {
+                var result = await CreateCartApiClient().EliminarAsync(idproducto);
+                return Json(new { respuesta = result.Success, mensaje = result.Message }, JsonRequestBehavior.AllowGet);
+            }
+
             int idcliente = ((Cliente)Session["Cliente"]).IdCliente;
 
             bool respuesta = false;
@@ -392,6 +430,17 @@ namespace CapaPresentacionTienda.Controllers
         {
             bool enabled;
             return bool.TryParse(ConfigurationManager.AppSettings["Features:UseCatalogApi"], out enabled) && enabled;
+        }
+
+        private static bool UseCartApi()
+        {
+            bool enabled;
+            return bool.TryParse(ConfigurationManager.AppSettings["Features:UseCartApi"], out enabled) && enabled;
+        }
+
+        private CartApiClient CreateCartApiClient()
+        {
+            return new CartApiClient(Session["IdentityAccessToken"] as string);
         }
 
         private static void AgregarImagen(Producto producto, Producto imagenLegada)

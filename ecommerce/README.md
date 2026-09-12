@@ -2,11 +2,14 @@
 
 Guía para configurar y ejecutar localmente los componentes ya disponibles del proyecto.
 
+Para continuar el trabajo de migración desde otra conversión o equipo, leer primero `HANDOFF_MIGRACION.md`.
+
 ## Componentes disponibles
 
 - Aplicaciones heredadas ASP.NET MVC sobre .NET Framework 4.7.2.
 - Catalog Service sobre .NET 8.
 - Identity Service sobre .NET 8.
+- Cart Service sobre .NET 8.
 - SQL Server con la base de datos existente `ecommerce`.
 
 Catalog Service ofrece las lecturas de categorías, marcas y productos. Identity Service ofrece autenticación JWT, rehash progresivo de contraseñas heredadas y cambio autenticado de contraseña.
@@ -23,12 +26,13 @@ Catalog Service ofrece las lecturas de categorías, marcas y productos. Identity
 
 ### Para las aplicaciones MVC heredadas
 
-- Windows.
-- Visual Studio con la carga de trabajo **ASP.NET y desarrollo web**.
-- .NET Framework 4.7.2 Developer Pack.
-- SQL Server accesible desde Windows.
+Una de estas alternativas:
 
-Los proyectos MVC heredados no se pueden compilar completamente con el SDK de .NET en macOS porque requieren `Microsoft.WebApplication.targets`.
+- Windows con Visual Studio, la carga de trabajo **ASP.NET y desarrollo web** y .NET Framework 4.7.2 Developer Pack.
+- macOS con Mono 6.12, MSBuild para Mono 16.10 y XSP4, según `EJECUCION_MONO_MACOS.md`.
+- SQL Server accesible desde el sistema elegido.
+
+Los proyectos MVC no se ejecutan con `dotnet run`. En macOS se validaron específicamente mediante Mono/MSBuild y XSP4; esta ruta es temporal para comparación durante la migración.
 
 ## Obtener el proyecto
 
@@ -72,10 +76,12 @@ No escribir cadenas de conexión ni claves JWT reales en `appsettings.json`. Los
 | Catalog | `Jwt__SigningKey` | Clave usada para validar tokens de Identity |
 | Identity | `ConnectionStrings__IdentityDatabase` | Conexión a la base `ecommerce` |
 | Identity | `Jwt__SigningKey` | Clave usada para firmar tokens |
+| Cart | `ConnectionStrings__CartDatabase` | Conexión a la base `ecommerce` |
+| Cart | `Jwt__SigningKey` | Misma clave usada por Identity |
 
-`Jwt__SigningKey` debe tener al menos 32 caracteres y debe ser exactamente la misma en Catalog e Identity.
+`Jwt__SigningKey` debe tener al menos 32 caracteres y debe ser exactamente la misma en Catalog, Identity y Cart.
 
-El emisor predeterminado es `Ecommerce.Identity` y la audiencia predeterminada es `Ecommerce.Services`. Se pueden sobrescribir con `Jwt__Issuer` y `Jwt__Audience`, manteniendo los mismos valores en ambos servicios.
+El emisor predeterminado es `Ecommerce.Identity` y la audiencia predeterminada es `Ecommerce.Services`. Se pueden sobrescribir con `Jwt__Issuer` y `Jwt__Audience`, manteniendo los mismos valores en los tres servicios.
 
 ### Generar una clave JWT local
 
@@ -101,7 +107,7 @@ Abrir una terminal para Catalog Service:
 
 ```bash
 export ConnectionStrings__CatalogDatabase='Server=localhost,1433;Database=ecommerce;User Id=sa;Password=<CONTRASEÑA_SQL>;Encrypt=True;TrustServerCertificate=True'
-export Jwt__SigningKey='<MISMA_CLAVE_JWT_EN_AMBOS_SERVICIOS>'
+export Jwt__SigningKey='<MISMA_CLAVE_JWT_EN_LOS_TRES_SERVICIOS>'
 dotnet run --project src/Services/Catalog/Catalog.Api/Catalog.Api.csproj
 ```
 
@@ -109,8 +115,16 @@ Abrir otra terminal para Identity Service:
 
 ```bash
 export ConnectionStrings__IdentityDatabase='Server=localhost,1433;Database=ecommerce;User Id=sa;Password=<CONTRASEÑA_SQL>;Encrypt=True;TrustServerCertificate=True'
-export Jwt__SigningKey='<MISMA_CLAVE_JWT_EN_AMBOS_SERVICIOS>'
+export Jwt__SigningKey='<MISMA_CLAVE_JWT_EN_LOS_TRES_SERVICIOS>'
 dotnet run --project src/Services/Identity/Identity.Api/Identity.Api.csproj
+```
+
+Abrir otra terminal para Cart Service:
+
+```bash
+export ConnectionStrings__CartDatabase='Server=localhost,1433;Database=ecommerce;User Id=sa;Password=<CONTRASEÑA_SQL>;Encrypt=True;TrustServerCertificate=True'
+export Jwt__SigningKey='<MISMA_CLAVE_JWT_EN_LOS_TRES_SERVICIOS>'
+dotnet run --project src/Services/Cart/Cart.Api/Cart.Api.csproj
 ```
 
 ## Iniciar los microservicios en Windows PowerShell
@@ -119,7 +133,7 @@ Abrir una terminal para Catalog Service:
 
 ```powershell
 $env:ConnectionStrings__CatalogDatabase = 'Server=localhost,1433;Database=ecommerce;User Id=sa;Password=<CONTRASEÑA_SQL>;Encrypt=True;TrustServerCertificate=True'
-$env:Jwt__SigningKey = '<MISMA_CLAVE_JWT_EN_AMBOS_SERVICIOS>'
+$env:Jwt__SigningKey = '<MISMA_CLAVE_JWT_EN_LOS_TRES_SERVICIOS>'
 dotnet run --project src/Services/Catalog/Catalog.Api/Catalog.Api.csproj
 ```
 
@@ -127,8 +141,16 @@ Abrir otra terminal para Identity Service:
 
 ```powershell
 $env:ConnectionStrings__IdentityDatabase = 'Server=localhost,1433;Database=ecommerce;User Id=sa;Password=<CONTRASEÑA_SQL>;Encrypt=True;TrustServerCertificate=True'
-$env:Jwt__SigningKey = '<MISMA_CLAVE_JWT_EN_AMBOS_SERVICIOS>'
+$env:Jwt__SigningKey = '<MISMA_CLAVE_JWT_EN_LOS_TRES_SERVICIOS>'
 dotnet run --project src/Services/Identity/Identity.Api/Identity.Api.csproj
+```
+
+Abrir otra terminal para Cart Service:
+
+```powershell
+$env:ConnectionStrings__CartDatabase = 'Server=localhost,1433;Database=ecommerce;User Id=sa;Password=<CONTRASEÑA_SQL>;Encrypt=True;TrustServerCertificate=True'
+$env:Jwt__SigningKey = '<MISMA_CLAVE_JWT_EN_LOS_TRES_SERVICIOS>'
+dotnet run --project src/Services/Cart/Cart.Api/Cart.Api.csproj
 ```
 
 ## Direcciones locales
@@ -138,8 +160,10 @@ dotnet run --project src/Services/Identity/Identity.Api/Identity.Api.csproj
 | Catalog Service | `http://localhost:5137` |
 | Catalog Swagger, en Development | `http://localhost:5137/swagger` |
 | Identity Service | `http://localhost:5204` |
+| Cart Service | `http://localhost:5292` |
 | Catalog health check | `http://localhost:5137/health` |
 | Identity health check | `http://localhost:5204/health` |
+| Cart health check | `http://localhost:5292/health` |
 
 Los puertos proceden de los perfiles `http` en `Properties/launchSettings.json`.
 
@@ -148,6 +172,7 @@ Los puertos proceden de los perfiles `http` en `Properties/launchSettings.json`.
 ```bash
 curl -i http://localhost:5137/health
 curl -i http://localhost:5204/health
+curl -i http://localhost:5292/health
 curl -i http://localhost:5137/api/v1/categories
 ```
 
@@ -161,11 +186,11 @@ Desde la carpeta `ecommerce`:
 dotnet test Ecommerce.Services.sln --configuration Release
 ```
 
-La suite actual incluye pruebas unitarias y HTTP de Catalog e Identity.
+La suite actual incluye pruebas unitarias y HTTP de Catalog, Identity y Cart.
 
 ## Configurar la tienda MVC heredada
 
-La tienda requiere Windows y Visual Studio.
+La tienda puede ejecutarse en Windows con Visual Studio o en macOS mediante el procedimiento validado en `EJECUCION_MONO_MACOS.md`.
 
 1. Abrir la solución heredada correspondiente en Visual Studio.
 2. Restaurar los paquetes NuGet.
@@ -187,20 +212,21 @@ No confirmar en Git cadenas de conexión, contraseñas, tokens ni credenciales d
 1. SQL Server.
 2. Restaurar o verificar la base `ecommerce`.
 3. Identity Service.
-4. Catalog Service.
-5. Aplicación MVC heredada, únicamente si se necesita probar la interfaz.
+4. Cart Service.
+5. Catalog Service.
+6. Aplicación MVC heredada, únicamente si se necesita probar la interfaz.
 
-Catalog e Identity pueden iniciarse en cualquier orden, pero ambos deben usar la misma configuración JWT.
+Catalog, Identity y Cart pueden iniciarse en cualquier orden, pero todos deben usar la misma configuración JWT.
 
 ## Solución de problemas
 
 ### Falta la cadena de conexión
 
-El servicio se detiene al iniciar con un mensaje indicando que `CatalogDatabase` o `IdentityDatabase` no está configurada. Definir la variable `ConnectionStrings__...` en la misma terminal donde se ejecuta `dotnet run`.
+El servicio se detiene al iniciar con un mensaje indicando que `CatalogDatabase`, `IdentityDatabase` o `CartDatabase` no está configurada. Definir la variable `ConnectionStrings__...` en la misma terminal donde se ejecuta `dotnet run`.
 
 ### La clave JWT no está configurada
 
-Definir `Jwt__SigningKey` con al menos 32 caracteres. Usar el mismo valor para ambos servicios.
+Definir `Jwt__SigningKey` con al menos 32 caracteres. Usar el mismo valor para los tres servicios.
 
 ### El health check responde `Unhealthy`
 
@@ -214,7 +240,7 @@ Comprobar:
 
 ### Un token de Identity recibe `401` en otro servicio
 
-Comprobar que Identity y Catalog tengan exactamente los mismos valores para:
+Comprobar que Identity, Catalog y Cart tengan exactamente los mismos valores para:
 
 - `Jwt__SigningKey`.
 - `Jwt__Issuer`.
@@ -222,9 +248,9 @@ Comprobar que Identity y Catalog tengan exactamente los mismos valores para:
 
 También verificar que el token no haya expirado y que los relojes de ambas máquinas estén sincronizados.
 
-### Los proyectos MVC no compilan en macOS
+### Los proyectos MVC no compilan con `dotnet build`
 
-Es el comportamiento esperado para estos proyectos ASP.NET MVC sobre .NET Framework. Compilarlos en Windows con Visual Studio y la carga de trabajo web instalada.
+Es el comportamiento esperado para estos proyectos ASP.NET MVC sobre .NET Framework. Usar Visual Studio en Windows o Mono/MSBuild en macOS. Para macOS, seguir `EJECUCION_MONO_MACOS.md`.
 
 ## Seguridad
 

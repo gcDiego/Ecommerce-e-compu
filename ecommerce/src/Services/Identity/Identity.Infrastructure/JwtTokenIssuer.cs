@@ -16,7 +16,7 @@ public sealed class JwtTokenIssuer(string issuer, string audience, string signin
         {
             new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, account.Email),
-            new Claim(ClaimTypes.Role, account.Type.ToString()),
+            new Claim("role", account.Type.ToString()),
             new Claim("must_reset_password", account.MustResetPassword.ToString().ToLowerInvariant())
         };
         var credentials = new SigningCredentials(

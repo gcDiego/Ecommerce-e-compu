@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Configuration;
+using System.Threading.Tasks;
 
 namespace CapaPresentacionTienda.Controllers
 {
@@ -71,7 +73,7 @@ namespace CapaPresentacionTienda.Controllers
             if (resultado == 0)
             {
                 ViewBag.Error = null;
-                ViewBag.Mensaje = "Su cuenta ha sido creada correctamente 🎉";
+                ViewBag.Mensaje = "Su cuenta ha sido creada correctamente ";
                 ModelState.Clear();
                 return View(new Cliente());
             }
@@ -85,39 +87,45 @@ namespace CapaPresentacionTienda.Controllers
 
         [HttpPost]
 
-        public ActionResult Index(string correo, string clave)
+        public async Task<ActionResult> Index(string correo, string clave)
         {
+            Cliente oCliente;
 
-            Cliente oCliente = null;
-
-            oCliente = new CN_Cliente().Listar().Where(item => item.Correo == correo && item.Clave == CN_Recursos.ConvertirSha256(clave)).FirstOrDefault();
-
-            if (oCliente == null)
+            if (UseIdentityApi())
             {
-                ViewBag.Error = "Correo o contraseña incorrectos";
-                return View();
+                var login = await new IdentityApiClient().LoginCustomerAsync(correo, clave);
+                if (login == null)
+                {
+                    ViewBag.Error = "Correo o contraseña incorrectos";
+                    return View();
+                }
+
+                oCliente = login.Cliente;
+                Session["IdentityAccessToken"] = login.AccessToken;
+                Session["IdentityAccessTokenExpiresAt"] = login.ExpiresAt;
             }
             else
             {
-                if (oCliente.Restablecer)
+                oCliente = new CN_Cliente().Listar()
+                    .FirstOrDefault(item => item.Correo == correo && item.Clave == CN_Recursos.ConvertirSha256(clave));
+                if (oCliente == null)
                 {
-                    TempData["IdCliente"] = oCliente.IdCliente;
-                    return RedirectToAction("CambiarClave", "Acceso");
+                    ViewBag.Error = "Correo o contraseña incorrectos";
+                    return View();
                 }
-                else
-                {
-                    FormsAuthentication.SetAuthCookie(oCliente.Correo, false);
-
-                    Session["Cliente"] = oCliente;
-
-                    ViewBag.Error = null;
-
-                    return RedirectToAction("Index", "Tienda");
-                }
-
             }
 
-                  
+            if (oCliente.Restablecer)
+            {
+                TempData["IdCliente"] = oCliente.IdCliente;
+                return RedirectToAction("CambiarClave", "Acceso");
+            }
+
+            var authCookie = FormsAuthentication.GetAuthCookie(oCliente.Correo, false);
+            Response.Cookies.Add(authCookie);
+            Session["Cliente"] = oCliente;
+            ViewBag.Error = null;
+            return RedirectToAction("Index", "Tienda");
         }
 
         [HttpPost]
@@ -194,10 +202,16 @@ namespace CapaPresentacionTienda.Controllers
         public ActionResult CerrarSesion()
         {
             Session["Cliente"] = null;
+            Session["IdentityAccessToken"] = null;
+            Session["IdentityAccessTokenExpiresAt"] = null;
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Acceso");
         }
 
-
+        private static bool UseIdentityApi()
+        {
+            bool enabled;
+            return bool.TryParse(ConfigurationManager.AppSettings["Features:UseIdentityApi"], out enabled) && enabled;
+        }
     }
 }
