@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:25226",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:20190",
+      "sslPort": 44310
     }
   },
   "profiles": {
@@ -13,20 +13,30 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
-      "applicationUrl": "http://localhost:5204",
+      "launchUrl": "api/v1/cart",
+      "applicationUrl": "http://localhost:5292",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__IdentityDatabase": "Server=localhost,1433;Database=ecommerce;User Id=sa;Password=TuPasswordSeguro123!;Encrypt=True;TrustServerCertificate=True",
+        "ConnectionStrings__CartDatabase": "Server=localhost,1433;Database=ecommerce;User Id=sa;Password=TuPasswordSeguro123!;Encrypt=True;TrustServerCertificate=True",
         "Jwt__Issuer": "Ecommerce.Identity",
         "Jwt__Audience": "Ecommerce.Services",
         "Jwt__SigningKey": "c48bf1233844f5c77c1f8333da5de99123a2a814354c47bf48a1580c1216c585"
       }
     },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "api/v1/cart",
+      "applicationUrl": "https://localhost:7119;http://localhost:5292",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "api/v1/cart",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
